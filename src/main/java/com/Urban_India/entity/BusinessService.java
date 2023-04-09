@@ -22,7 +22,10 @@ public class BusinessService {
     private String description;
     private double price;
     private Long mode_id;
-    private Long discount_id;
+
+    @OneToOne
+    @JoinColumn(name = "discount_id",referencedColumnName = "id")
+    private Discount discount;
     @OneToOne
     @JoinColumn(name = "status_id",referencedColumnName = "id")
     private Status status;
@@ -30,11 +33,11 @@ public class BusinessService {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "service_id")
-    private Service service;
+    private ServiceProviderEntitiy service;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinColumn(name = "business_id")
     private Business business;
 

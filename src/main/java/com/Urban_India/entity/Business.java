@@ -30,4 +30,7 @@ public class Business {
 
     @OneToMany(mappedBy = "business",cascade = CascadeType.ALL)
     private List<BusinessService> businessServices;
+
+    @OneToMany(mappedBy = "business",cascade = CascadeType.ALL)
+    private List<Discount> discountList;
 }

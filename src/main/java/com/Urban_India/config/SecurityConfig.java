@@ -56,8 +56,7 @@ public class SecurityConfig {
         corsConfiguration.setExposedHeaders(List.of("Authorization"));
 
         http.csrf().disable().cors().configurationSource(request -> corsConfiguration).and().authorizeHttpRequests((authorize)->{
-                    authorize.requestMatchers(HttpMethod.GET,"/api/posts").permitAll()
-                            .requestMatchers("/api/auth/**").permitAll()
+                    authorize.requestMatchers("/api/auth/**").permitAll()
                             .anyRequest().authenticated();
                 }).exceptionHandling(exception-> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

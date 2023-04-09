@@ -19,7 +19,7 @@ public class Image {
 
     private String type;
 
-    @Lob
+//    @Lob
     @Column(name = "imagedata", length = 1000)
     private byte[] imageData;
 }

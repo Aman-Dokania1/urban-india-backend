@@ -1,5 +1,6 @@
 package com.Urban_India.security;
 
+import ch.qos.logback.core.net.server.Client;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Objects;
 
 @Component
 @AllArgsConstructor
@@ -27,6 +29,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+        // this is used for testing (find the type of device form where rest api is calling)
+//        System.out.println("called do internal method");
+//        extractIp(request);
+//        getDeviceDetails(request);
         // get jwt token from http request
         String token=getTokenFromRequest(request);
 
@@ -49,6 +55,35 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         filterChain.doFilter(request,response);
     }
+
+//    private String extractIp(HttpServletRequest request) {
+//        String clientIp;
+//        String clientXForwardedForIp = request
+//                .getHeader("x-forwarded-for");
+//        if (clientXForwardedForIp!=null) {
+//            clientIp = parseXForwardedHeader(clientXForwardedForIp);
+//        } else {
+//            clientIp = request.getRemoteAddr();
+//        }
+//        return clientIp;
+//    }
+
+//    private String getDeviceDetails(HttpServletRequest request ) {
+//        String userAgent=request.getHeader("User-Agent");
+//        String deviceDetails = null;
+//
+//        System.out.println(userAgent);
+//        Client client = parser.parse(userAgent);
+//        if (Objects.nonNull(client)) {
+//            deviceDetails = client.userAgent.family
+//                    + " " + client.userAgent.major + "."
+//                    + client.userAgent.minor + " - "
+//                    + client.os.family + " " + client.os.major
+//                    + "." + client.os.minor;
+//        }
+//        return deviceDetails;
+//    }
+
 
     private String getTokenFromRequest(HttpServletRequest request){
         String bearerToken= request.getHeader("Authorization");

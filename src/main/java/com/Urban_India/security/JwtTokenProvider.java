@@ -58,7 +58,6 @@ public class JwtTokenProvider {
             throw new UrbanApiException(HttpStatus.BAD_REQUEST,"Unsupported JWT Token");
         }catch (IllegalArgumentException exception){
             throw new UrbanApiException(HttpStatus.BAD_REQUEST,"JWT Claim String is Empty");
-
         }
     }
 }

@@ -1,11 +1,9 @@
 package com.Urban_India.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -14,7 +12,8 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "services")
-public class Service {
+@Builder
+public class ServiceProviderEntitiy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,5 +24,5 @@ public class Service {
     private Image image;
 
     @OneToMany(mappedBy = "service",cascade = CascadeType.ALL)
-    private List<BusinessService> businessServices;
+    private List<BusinessService> businessServices=new ArrayList<>();
 }

@@ -9,9 +9,14 @@ import com.Urban_India.payload.RegisterDto;
 import com.Urban_India.repository.ImageRepositroy;
 import com.Urban_India.repository.RoleRepository;
 import com.Urban_India.repository.UserRepository;
+import com.Urban_India.security.JwtTokenProvider;
 import com.Urban_India.service.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,12 +29,20 @@ public class AuthServiceImpl implements AuthService {
 
     private RoleRepository roleRepository;
     private UserRepository userRepository;
-
-    private ImageRepositroy imageRepositroy;
     private PasswordEncoder passwordEncoder;
+    private AuthenticationManager authenticationManager;
+
+    private JwtTokenProvider jwtTokenProvider;
     @Override
     public String login(LoginDto loginDto) {
-        return null;
+        Authentication authentication=authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginDto.getUserNameOrEmail(),loginDto.getPassword()));
+
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+
+        String token=jwtTokenProvider.generateToken(authentication);
+        return token;
+
     }
 
     @Override
@@ -47,11 +60,8 @@ public class AuthServiceImpl implements AuthService {
         user.setEmail(registerDto.getEmail());
         user.setPassword(passwordEncoder.encode(registerDto.getPassword()));
         user.setUsername(registerDto.getUsername());
-
-//        Image image=new Image();
-//        image.setImage_link(registerDto.getImages());
-//
-//        imageRepositroy.save(image);
+        user.setGender(registerDto.getGender());
+        user.setPhone_number((registerDto.getPhone_number()));
 
         user.setImage(registerDto.getImages());
         System.out.println(user.getUsername()+" "+user.getEmail()+" "+user.getImage());
@@ -62,8 +72,6 @@ public class AuthServiceImpl implements AuthService {
             return  new UrbanApiException(HttpStatus.BAD_REQUEST, "ERROR");
         });
 
-        System.out.println("123456787654323456765432userRole.toString()");
-        System.out.println(userRole.toString());
         roles.add(userRole);
         user.setRoles(roles);
         userRepository.save(user);
