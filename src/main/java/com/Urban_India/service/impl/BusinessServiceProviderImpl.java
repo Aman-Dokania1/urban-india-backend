@@ -59,7 +59,7 @@ public class BusinessServiceProviderImpl implements BusinessServiceProvider {
         BusinessService savedBusinessService=businessServiceRepository.save(businessService);
         System.out.println(business.getBusinessServices());
         System.out.println(serviceProviderEntitiy.getBusinessServices());
-        BusinessServiceDto businessServiceDto1=mapperUtil.mapTOBusinessServiceDto(savedBusinessService);
+        BusinessServiceDto businessServiceDto1=mapperUtil.mapObject(savedBusinessService, BusinessServiceDto.class);
         return businessServiceDto1;
     }
 }

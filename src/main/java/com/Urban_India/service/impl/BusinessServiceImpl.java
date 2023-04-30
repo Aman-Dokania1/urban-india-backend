@@ -16,6 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 @NoArgsConstructor
@@ -33,12 +35,18 @@ public class BusinessServiceImpl implements BusinessService {
     @Override
     public BusinessDto createBusiness(BusinessDto businessDto) {
         User user=currentUser();
-        Business business=mapperUtil.mapToBusiness(businessDto);
+        Business business=mapperUtil.mapObject(businessDto,Business.class);
         business.setUser(user);
         Address address=addressService.saveAddress(business.getAddress());
         business.setAddress(address);
         Business savedBusiness=businessRepository.save(business);
-        return mapperUtil.mapToBusinessDto(savedBusiness);
+        return mapperUtil.mapObject(savedBusiness, BusinessDto.class);
+    }
+
+    @Override
+    public List<BusinessDto> getAllBusiness() {
+        List<Business> businessList = businessRepository.findAll();
+        return mapperUtil.mapList(businessList,BusinessDto.class);
     }
 
     private User currentUser(){

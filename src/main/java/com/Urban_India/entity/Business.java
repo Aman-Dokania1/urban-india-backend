@@ -17,10 +17,15 @@ public class Business {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String name;
+
     @OneToOne
     private Address address;
+
     @OneToOne
     private Image image;
+
     //business details such as pan card,adhar card
     private String documents;
 
@@ -33,4 +38,7 @@ public class Business {
 
     @OneToMany(mappedBy = "business",cascade = CascadeType.ALL)
     private List<Discount> discountList;
+
+    @OneToMany(mappedBy = "business",cascade = CascadeType.ALL)
+    List<Reviews> reviewsList;
 }

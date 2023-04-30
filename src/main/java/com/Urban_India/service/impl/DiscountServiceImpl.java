@@ -27,10 +27,10 @@ public class DiscountServiceImpl implements DiscountService {
     @Override
     public DiscountDto createDiscount(Long businessId, DiscountDto discountDto) {
         Business business= businessRepository.findById(businessId).orElseThrow(()->new ResourceNotFoundException("business","id",String.valueOf(businessId)));
-        Discount discount=mapperUtil.mapToDiscount(discountDto);
+        Discount discount=mapperUtil.mapObject(discountDto, Discount.class);
         discount.setBusiness(business);
         Discount saveDiscount=discountRepository.save(discount);
         System.out.println(business.getDiscountList());
-        return mapperUtil.mapToDiscountDto(saveDiscount);
+        return mapperUtil.mapObject(saveDiscount, DiscountDto.class);
     }
 }

@@ -20,8 +20,8 @@ public class ServiceProviderImpl implements ServiceProvider {
     private MapperUtil mapperUtil;
     @Override
     public ServiceDto createService(ServiceDto serviceDto) {
-        ServiceProviderEntitiy service=mapperUtil.mapToService(serviceDto);
+        ServiceProviderEntitiy service=mapperUtil.mapObject(serviceDto, ServiceProviderEntitiy.class);
         ServiceProviderEntitiy saveService=serviceRepository.save(service);
-        return mapperUtil.mapToServoceDto(saveService);
+        return mapperUtil.mapObject(saveService, ServiceDto.class);
     }
 }

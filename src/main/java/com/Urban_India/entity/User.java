@@ -47,4 +47,7 @@ public class User {
              inverseJoinColumns = @JoinColumn(name = "service_request_id",referencedColumnName = "id")
      )
      private List<ServiceRequest> serviceRequests;
+
+     @OneToOne(mappedBy = "user")
+     private Orders order;
 }

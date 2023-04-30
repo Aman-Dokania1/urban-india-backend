@@ -6,6 +6,8 @@ import com.Urban_India.service.StatusService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class StatusServiceImpl implements StatusService {
@@ -14,5 +16,10 @@ public class StatusServiceImpl implements StatusService {
     @Override
     public void createStatus(Status status) {
         statusRepository.save(status);
+    }
+
+    @Override
+    public List<Status> getAllStatus() {
+        return statusRepository.findAll();
     }
 }

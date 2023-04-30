@@ -1,5 +1,6 @@
 package com.Urban_India.controller;
 
+import com.Urban_India.entity.Business;
 import com.Urban_India.entity.Image;
 import com.Urban_India.payload.BusinessDto;
 import com.Urban_India.payload.DiscountDto;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @Slf4j
@@ -40,10 +42,13 @@ public class BusinessController {
         return new ResponseEntity<>(businessDto1, HttpStatus.CREATED);
     }
 
+    @GetMapping
+    public List<BusinessDto> getAllBusiness(){
+        return businessService.getAllBusiness();
+    }
     @PostMapping("/discount/{id}")
     public ResponseEntity<DiscountDto> createDiscount(@PathVariable(value = "id") Long businessId, @RequestBody DiscountDto discountDto){
 //        logger.error("called discount controller");
-        log.error("lsadkjsa");
         DiscountDto createdDiscount=discountService.createDiscount(businessId,discountDto);
         return new ResponseEntity<DiscountDto>(createdDiscount, HttpStatus.CREATED);
     }

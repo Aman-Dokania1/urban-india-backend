@@ -26,9 +26,11 @@ public class BusinessService {
     @OneToOne
     @JoinColumn(name = "discount_id",referencedColumnName = "id")
     private Discount discount;
+
     @OneToOne
     @JoinColumn(name = "status_id",referencedColumnName = "id")
     private Status status;
+
     @OneToOne
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
@@ -50,5 +52,12 @@ public class BusinessService {
             inverseJoinColumns = @JoinColumn(name = "discount_id",referencedColumnName = "id")
     )
     private List<Discount> discountList;
+
+    @OneToOne(mappedBy = "businessService")
+    private Orders order;
+
+    @OneToMany(mappedBy = "businessService",cascade = CascadeType.ALL)
+    List<Reviews> reviewsList;
+
 
 }
