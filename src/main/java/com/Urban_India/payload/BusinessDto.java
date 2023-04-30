@@ -16,4 +16,5 @@ public class BusinessDto {
     private Address address;
     private Image image;
     private String documents;
+    private String name;
 }
