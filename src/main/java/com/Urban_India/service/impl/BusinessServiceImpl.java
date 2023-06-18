@@ -35,12 +35,12 @@ public class BusinessServiceImpl implements BusinessService {
     @Override
     public BusinessDto createBusiness(BusinessDto businessDto) {
         User user=currentUser();
-        Business business=mapperUtil.mapObject(businessDto,Business.class);
+        Business business=businessDto.toBusiness();
         business.setUser(user);
         Address address=addressService.saveAddress(business.getAddress());
         business.setAddress(address);
         Business savedBusiness=businessRepository.save(business);
-        return mapperUtil.mapObject(savedBusiness, BusinessDto.class);
+        return business.toBusinessDto();
     }
 
     @Override

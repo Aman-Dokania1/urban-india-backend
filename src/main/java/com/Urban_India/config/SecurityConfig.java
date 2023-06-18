@@ -56,8 +56,19 @@ public class SecurityConfig {
         corsConfiguration.setExposedHeaders(List.of("Authorization"));
 
         http.csrf().disable().cors().configurationSource(request -> corsConfiguration).and().authorizeHttpRequests((authorize)->{
-                    authorize.requestMatchers("/api/auth/**").permitAll()
-                            .anyRequest().authenticated();
+                    try {
+                        authorize.requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/job/batch/**").permitAll()
+//                                .requestMatchers("/api/business/**").permitAll()
+    //                            .requestMatchers("/v2/api-docs/**").permitAll()
+    //                            .requestMatchers("/swagger-ui/**").permitAll()
+    //                            .requestMatchers("/swagger-resources/**").permitAll()
+    //                            .requestMatchers("/swagger-ui.html").permitAll()
+    //                            .requestMatchers("/webjars/**").permitAll()
+                                .anyRequest().authenticated().and().oauth2Login();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
                 }).exceptionHandling(exception-> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .sessionManagement(session-> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 

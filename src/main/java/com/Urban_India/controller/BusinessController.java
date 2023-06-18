@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @Slf4j
@@ -34,8 +36,11 @@ public class BusinessController {
 
 //    private Logger logger= LoggerFactory.getLogger(BusinessController.class);
     @PostMapping
-    public ResponseEntity<BusinessDto> createBusiness(@Valid @RequestParam("data") String data, @RequestParam("file") MultipartFile file) throws IOException {
-        Image image =imageDataService.saveImage(file);
+    public ResponseEntity<BusinessDto> createBusiness(@Valid @RequestParam("data") String data, @RequestParam(name = "file",required = false) MultipartFile file ) throws IOException {
+        Image image =null;
+        if(Objects.nonNull(file) && !file.isEmpty()){
+            image=imageDataService.saveImage(file);
+        }
         BusinessDto businessDto=mapper.readValue(data,BusinessDto.class);
         businessDto.setImage(image);
         BusinessDto businessDto1=businessService.createBusiness(businessDto);

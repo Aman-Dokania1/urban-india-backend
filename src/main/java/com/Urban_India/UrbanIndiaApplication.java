@@ -2,6 +2,7 @@ package com.Urban_India;
 
 import com.Urban_India.entity.Role;
 import com.Urban_India.entity.ServiceProviderEntitiy;
+import com.Urban_India.exception.ResourceNotFoundException;
 import com.Urban_India.repository.RoleRepository;
 import com.Urban_India.repository.ServiceRepository;
 import lombok.extern.slf4j.Slf4j;

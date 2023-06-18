@@ -22,7 +22,7 @@ public class CustomUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String userNameOrEmail) throws UsernameNotFoundException {
 
         User user=userRepository.findByUsernameOrEmail(userNameOrEmail,userNameOrEmail)
-                .orElseThrow(()->new UsernameNotFoundException("user not found with email and email  "+userNameOrEmail));
+                .orElseThrow(()->new UsernameNotFoundException("user not found with userName and email  "+userNameOrEmail));
 
 
         Set<GrantedAuthority> authoritySet=user.getRoles().
