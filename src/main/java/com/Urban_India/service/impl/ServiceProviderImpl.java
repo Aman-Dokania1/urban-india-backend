@@ -11,6 +11,8 @@ import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ServiceProviderImpl implements ServiceProvider {
 
@@ -23,5 +25,11 @@ public class ServiceProviderImpl implements ServiceProvider {
         ServiceProviderEntitiy service=mapperUtil.mapObject(serviceDto, ServiceProviderEntitiy.class);
         ServiceProviderEntitiy saveService=serviceRepository.save(service);
         return mapperUtil.mapObject(saveService, ServiceDto.class);
+    }
+
+    @Override
+    public List<ServiceDto> getAllService() {
+        List<ServiceProviderEntitiy> serviceProviderEntitiyList = serviceRepository.findAll();
+        return mapperUtil.mapList(serviceProviderEntitiyList,ServiceDto.class);
     }
 }

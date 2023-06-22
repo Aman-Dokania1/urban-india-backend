@@ -25,6 +25,7 @@ public class Business {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String name;
 
     private String tagline;
@@ -41,7 +42,7 @@ public class Business {
     // details such as pan card,adhar card
     private String documents;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "seller_id",referencedColumnName = "id")
     private User user ;
 

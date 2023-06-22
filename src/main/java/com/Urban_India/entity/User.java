@@ -30,7 +30,7 @@ public class User {
     @JoinColumn(name = "image_id", referencedColumnName = "id")
     private Image image;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "business_id",referencedColumnName = "id")
     private Business business;
 

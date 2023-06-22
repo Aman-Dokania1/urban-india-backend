@@ -7,6 +7,8 @@ import com.Urban_India.repository.*;
 import com.Urban_India.service.BusinessServiceProvider;
 import com.Urban_India.util.MapperUtil;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,18 +21,16 @@ public class BusinessServiceProviderImpl implements BusinessServiceProvider {
     private AddressRepository addressRepository;
     private BusinessServiceRepository businessServiceRepository;
     private StatusRepository statusRepository;
+    private UserRepository userRepository;
     @Override
     public BusinessServiceDto createBusinessService(BusinessServiceDto businessServiceDto) {
-//        BusinessService businessService=mapperUtil.mapToBusinessService(businessServiceDto);
+        BusinessService businessService = businessServiceDto.toBusinessService();
+        Business business= currentUser().getBusiness();
 
-        Business business=businessRepository.findById(businessServiceDto.getBusinessId()).
-                orElseThrow(()->new ResourceNotFoundException("business","id",String.valueOf(businessServiceDto.getBusinessId())));
-
-        ServiceProviderEntitiy serviceProviderEntitiy=serviceRepository.findById(businessServiceDto.getServiceId())
-                .orElseThrow(()->new ResourceNotFoundException("service","id",String.valueOf(businessServiceDto.getServiceId())));
-
-        Status status=statusRepository.findById(businessServiceDto.getStatusId())
-                .orElseThrow(()->new ResourceNotFoundException("status","id",String.valueOf(businessServiceDto.getStatusId())));
+        ServiceProviderEntitiy serviceProviderEntitiy=serviceRepository.findByTitle(businessServiceDto.getServiceType());
+//
+//        Status status=statusRepository.findById(businessServiceDto.getStatusId())
+//                .orElseThrow(()->new ResourceNotFoundException("status","id",String.valueOf(businessServiceDto.getStatusId())));
 
 //        Discount discount=null;
 //        if(businessServiceDto.getDiscountId()!=null){
@@ -38,28 +38,26 @@ public class BusinessServiceProviderImpl implements BusinessServiceProvider {
 //                    .orElseThrow(()->new ResourceNotFoundException("discount","id",String.valueOf(businessServiceDto.getDiscountId())));
 //        }
 
-        Address address=null;
-        if(businessServiceDto.getAddressId()!=null){
-            address=addressRepository.findById(businessServiceDto.getAddressId())
-                    .orElseThrow(()->new ResourceNotFoundException("address","id",String.valueOf(businessServiceDto.getAddressId())));
-        }
 
-        BusinessService businessService=new BusinessService();
+//        if(businessServiceDto.getAddressId()!=null){
+//            address=addressRepository.findById(businessServiceDto.getAddressId())
+//                    .orElseThrow(()->new ResourceNotFoundException("address","id",String.valueOf(businessServiceDto.getAddressId())));
+//        }
 
-        businessService.setTitle(businessServiceDto.getTitle());
-        businessService.setDescription(businessServiceDto.getDescription());
-        businessService.setPrice(businessServiceDto.getPrice());
-        businessService.setMode_id(businessServiceDto.getMode_id());
 
         businessService.setBusiness(business);
         businessService.setService(serviceProviderEntitiy);
-        businessService.setAddress(address);
-        businessService.setStatus(status);
 
         BusinessService savedBusinessService=businessServiceRepository.save(businessService);
-        System.out.println(business.getBusinessServices());
+//        System.out.println(business.getBusinessServices());
         System.out.println(serviceProviderEntitiy.getBusinessServices());
-        BusinessServiceDto businessServiceDto1=mapperUtil.mapObject(savedBusinessService, BusinessServiceDto.class);
+        BusinessServiceDto businessServiceDto1=savedBusinessService.toBusinessServiceDto();
         return businessServiceDto1;
+    }
+
+    private User currentUser(){
+        String username= SecurityContextHolder.getContext().getAuthentication().getName();
+        User user =userRepository.findByUsername(username).orElseThrow(()->new ResourceNotFoundException("user","username",username));
+        return user;
     }
 }

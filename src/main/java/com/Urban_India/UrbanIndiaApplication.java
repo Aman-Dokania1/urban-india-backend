@@ -32,10 +32,10 @@ public class UrbanIndiaApplication  implements CommandLineRunner {
 		if(!roleRepository.findByName("ROLE_ADMIN").isPresent())
 			roleRepository.save(roleAdmin);
 
-		ServiceProviderEntitiy service= ServiceProviderEntitiy.builder().title("service related to household").description("providing very good service").build();
-		ServiceProviderEntitiy service1= ServiceProviderEntitiy.builder().title("service related to education").description("world class level education center").build();
-		serviceRepository.save(service);
-		serviceRepository.save(service1);
+//		ServiceProviderEntitiy service= ServiceProviderEntitiy.builder().title("service related to household").description("providing very good service").build();
+//		ServiceProviderEntitiy service1= ServiceProviderEntitiy.builder().title("service related to education").description("world class level education center").build();
+//		serviceRepository.save(service);
+//		serviceRepository.save(service1);
 	}
 }
 

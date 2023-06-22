@@ -1,10 +1,13 @@
 package com.Urban_India.entity;
 
+import com.Urban_India.payload.BusinessDto;
+import com.Urban_India.payload.BusinessServiceDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
@@ -13,6 +16,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@SuperBuilder
 @Table(name = "business_service")
 public class BusinessService {
     @Id
@@ -59,5 +63,15 @@ public class BusinessService {
     @OneToMany(mappedBy = "businessService",cascade = CascadeType.ALL)
     List<Reviews> reviewsList;
 
-
+    public BusinessServiceDto toBusinessServiceDto(){
+        return BusinessServiceDto.builder()
+                .id(this.id)
+                .title(this.title)
+                .description(this.description)
+                .price(this.price)
+                .mode_id(this.mode_id)
+                .ServiceType(this.service.getTitle())
+                .addressModel(this.address.addressModel)
+                .build();
+    }
 }

@@ -40,6 +40,8 @@ public class BusinessServiceImpl implements BusinessService {
         Address address=addressService.saveAddress(business.getAddress());
         business.setAddress(address);
         Business savedBusiness=businessRepository.save(business);
+        user.setBusiness(business);
+        userRepository.save(user);
         return business.toBusinessDto();
     }
 

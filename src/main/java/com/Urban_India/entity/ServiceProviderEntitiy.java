@@ -17,6 +17,7 @@ public class ServiceProviderEntitiy {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true)
     private String title;
     private String description;
     @OneToOne
