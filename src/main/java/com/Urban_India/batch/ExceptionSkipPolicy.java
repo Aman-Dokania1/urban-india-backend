@@ -5,6 +5,8 @@ import org.springframework.batch.core.step.skip.SkipLimitExceededException;
 import org.springframework.batch.core.step.skip.SkipPolicy;
 import org.springframework.stereotype.Component;
 
+import java.util.zip.DataFormatException;
+
 @Component
 public class ExceptionSkipPolicy implements SkipPolicy {
     @Override

@@ -35,8 +35,7 @@ public class BusinessServiceController {
             image=imageDataService.saveImage(file);
         }
         BusinessServiceDto businessServiceDto=objectMapper.readValue(data,BusinessServiceDto.class);
-        System.out.println(businessServiceDto);
-        BusinessServiceDto businessServiceDto1=businessServiceProvider.createBusinessService(businessServiceDto);
-        return new ResponseEntity<>(businessServiceDto1, HttpStatus.CREATED);
+        businessServiceDto=businessServiceProvider.createBusinessService(businessServiceDto);
+        return new ResponseEntity<>(businessServiceDto, HttpStatus.CREATED);
     }
 }

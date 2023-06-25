@@ -14,9 +14,10 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ServiceDto {
+    private Long id;
     private String title;
     private String description;
     private Image image;
-    private List<BusinessService> businessServices;
+//    private List<BusinessService> businessServices;
 
 }

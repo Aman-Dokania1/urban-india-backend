@@ -12,7 +12,8 @@ public class CustomerProcessor implements ItemProcessor<Customer,Customer> {
 
     @Override
     public Customer process(Customer customer) throws Exception {
-        Integer date= Integer.parseInt(customer.getDob());
+//        Integer date= Integer.parseInt(customer.getDob());
+//        LocalDate date = LocalDate.parse(customer.getDob());
         return customer;
     }
 }

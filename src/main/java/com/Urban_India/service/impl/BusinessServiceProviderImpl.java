@@ -27,7 +27,9 @@ public class BusinessServiceProviderImpl implements BusinessServiceProvider {
         BusinessService businessService = businessServiceDto.toBusinessService();
         Business business= currentUser().getBusiness();
 
-        ServiceProviderEntitiy serviceProviderEntitiy=serviceRepository.findByTitle(businessServiceDto.getServiceType());
+        Address address = addressRepository.save(businessService.getAddress());
+
+        ServiceProviderEntitiy serviceProviderEntitiy=serviceRepository.findById(businessServiceDto.getServiceType()).get();
 //
 //        Status status=statusRepository.findById(businessServiceDto.getStatusId())
 //                .orElseThrow(()->new ResourceNotFoundException("status","id",String.valueOf(businessServiceDto.getStatusId())));
@@ -47,6 +49,7 @@ public class BusinessServiceProviderImpl implements BusinessServiceProvider {
 
         businessService.setBusiness(business);
         businessService.setService(serviceProviderEntitiy);
+        businessService.setAddress(address);
 
         BusinessService savedBusinessService=businessServiceRepository.save(businessService);
 //        System.out.println(business.getBusinessServices());

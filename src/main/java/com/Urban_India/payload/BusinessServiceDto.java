@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
+import java.util.Objects;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -23,7 +25,7 @@ public class BusinessServiceDto {
     private Long mode_id;
     private Long serviceId;
     private Long statusId;
-    private String ServiceType;
+    private Long ServiceType;
     private AddressModel addressModel;
 
     public BusinessService toBusinessService(){
@@ -33,7 +35,7 @@ public class BusinessServiceDto {
                 .description(this.description)
                 .price(this.price)
                 .mode_id(this.mode_id)
-                .address(new Address(null,addressModel.toString()))
+                .address(new Address(null, Objects.nonNull(addressModel) ? addressModel.toString() : ""))
                 .build();
     }
 }

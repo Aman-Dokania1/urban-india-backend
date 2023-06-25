@@ -70,7 +70,7 @@ public class BusinessService {
                 .description(this.description)
                 .price(this.price)
                 .mode_id(this.mode_id)
-                .ServiceType(this.service.getTitle())
+                .ServiceType(this.service.getId())
                 .addressModel(this.address.addressModel)
                 .build();
     }
