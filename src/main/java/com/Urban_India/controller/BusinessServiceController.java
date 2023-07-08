@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.PrivateKey;
+import java.util.List;
 import java.util.Objects;
 
 @RestController
@@ -37,5 +38,11 @@ public class BusinessServiceController {
         BusinessServiceDto businessServiceDto=objectMapper.readValue(data,BusinessServiceDto.class);
         businessServiceDto=businessServiceProvider.createBusinessService(businessServiceDto);
         return new ResponseEntity<>(businessServiceDto, HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    private ResponseEntity<List<BusinessServiceDto>> getAllBusinessService(){
+        List<BusinessServiceDto> businessServiceDtos = this.businessServiceProvider.getAllBusinessService();
+        return new ResponseEntity<>(businessServiceDtos,HttpStatus.OK);
     }
 }

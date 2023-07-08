@@ -8,4 +8,5 @@ public interface BusinessService {
      BusinessDto createBusiness(BusinessDto businessDto);
 
      List<BusinessDto> getAllBusiness();
+
 }

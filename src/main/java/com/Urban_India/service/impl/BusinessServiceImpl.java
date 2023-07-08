@@ -51,6 +51,8 @@ public class BusinessServiceImpl implements BusinessService {
         return mapperUtil.mapList(businessList,BusinessDto.class);
     }
 
+
+
     private User currentUser(){
         String username= SecurityContextHolder.getContext().getAuthentication().getName();
         User user =userRepository.findByUsername(username).orElseThrow(()->new ResourceNotFoundException("user","username",username));

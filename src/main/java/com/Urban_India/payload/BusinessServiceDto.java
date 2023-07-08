@@ -23,9 +23,14 @@ public class BusinessServiceDto {
     private String description;
     private double price;
     private Long mode_id;
-    private Long serviceId;
+    private String image;
+    private Double rating;
+    private String businessName;
+    private Long businessId;
+    private Long serviceTypeId;
+    private String serviceTypeName;
     private Long statusId;
-    private Long ServiceType;
+    private Long addressID;
     private AddressModel addressModel;
 
     public BusinessService toBusinessService(){
@@ -35,7 +40,7 @@ public class BusinessServiceDto {
                 .description(this.description)
                 .price(this.price)
                 .mode_id(this.mode_id)
-                .address(new Address(null, Objects.nonNull(addressModel) ? addressModel.toString() : ""))
+                .address(new Address(Objects.nonNull(addressID) ? addressID :null, Objects.nonNull(addressModel) ? addressModel.toString() : null))
                 .build();
     }
 }

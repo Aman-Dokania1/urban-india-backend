@@ -11,6 +11,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class BusinessServiceProviderImpl implements BusinessServiceProvider {
@@ -29,7 +31,7 @@ public class BusinessServiceProviderImpl implements BusinessServiceProvider {
 
         Address address = addressRepository.save(businessService.getAddress());
 
-        ServiceProviderEntitiy serviceProviderEntitiy=serviceRepository.findById(businessServiceDto.getServiceType()).get();
+        ServiceProviderEntitiy serviceProviderEntitiy=serviceRepository.findById(businessServiceDto.getServiceTypeId()).get();
 //
 //        Status status=statusRepository.findById(businessServiceDto.getStatusId())
 //                .orElseThrow(()->new ResourceNotFoundException("status","id",String.valueOf(businessServiceDto.getStatusId())));
@@ -53,9 +55,16 @@ public class BusinessServiceProviderImpl implements BusinessServiceProvider {
 
         BusinessService savedBusinessService=businessServiceRepository.save(businessService);
 //        System.out.println(business.getBusinessServices());
-        System.out.println(serviceProviderEntitiy.getBusinessServices());
+//        System.out.println(serviceProviderEntitiy.getBusinessServices());
         BusinessServiceDto businessServiceDto1=savedBusinessService.toBusinessServiceDto();
         return businessServiceDto1;
+    }
+
+    @Override
+    public List<BusinessServiceDto> getAllBusinessService() {
+        List<BusinessService> businessServices = this.businessServiceRepository.findAll();
+        List<BusinessServiceDto> businessServiceDtoList  = businessServices.stream().map(businessService -> businessService.toBusinessServiceDto()).toList();
+        return businessServiceDtoList;
     }
 
     private User currentUser(){

@@ -10,6 +10,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Getter
@@ -63,6 +64,10 @@ public class BusinessService {
     @OneToMany(mappedBy = "businessService",cascade = CascadeType.ALL)
     List<Reviews> reviewsList;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "image_id", referencedColumnName = "id")
+    private Image image;
+
     public BusinessServiceDto toBusinessServiceDto(){
         return BusinessServiceDto.builder()
                 .id(this.id)
@@ -70,8 +75,14 @@ public class BusinessService {
                 .description(this.description)
                 .price(this.price)
                 .mode_id(this.mode_id)
-                .ServiceType(this.service.getId())
+                .image(Objects.nonNull(this.image) ? this.image.getImageData().toString() : null)
+                .businessName(this.business.getName())
+                .businessId(this.business.getId())
+                .serviceTypeId(this.service.getId())
+                .serviceTypeName(this.service.getTitle())
+                .statusId(Objects.nonNull(this.status) ? this.status.getId() : null)
                 .addressModel(this.address.addressModel)
+                .addressID(this.address.getId())
                 .build();
     }
 }
