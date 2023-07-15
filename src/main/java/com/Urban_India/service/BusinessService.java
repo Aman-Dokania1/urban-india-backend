@@ -5,8 +5,10 @@ import com.Urban_India.payload.BusinessDto;
 import java.util.List;
 
 public interface BusinessService {
-     BusinessDto createBusiness(BusinessDto businessDto);
+     public BusinessDto createBusiness(BusinessDto businessDto);
 
-     List<BusinessDto> getAllBusiness();
+     public List<BusinessDto> getAllBusiness();
+
+     public BusinessDto getBusinessById(Long id);
 
 }

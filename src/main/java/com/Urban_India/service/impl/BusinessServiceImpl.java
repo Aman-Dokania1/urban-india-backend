@@ -51,6 +51,11 @@ public class BusinessServiceImpl implements BusinessService {
         return mapperUtil.mapList(businessList,BusinessDto.class);
     }
 
+    @Override
+    public BusinessDto getBusinessById(Long id) {
+        Business business = businessRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Business","id",id.toString()));
+        return mapperUtil.mapObject(business, BusinessDto.class);
+    }
 
 
     private User currentUser(){

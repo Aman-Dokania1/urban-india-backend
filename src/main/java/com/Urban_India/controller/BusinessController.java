@@ -3,11 +3,13 @@ package com.Urban_India.controller;
 import com.Urban_India.entity.Business;
 import com.Urban_India.entity.Image;
 import com.Urban_India.payload.BusinessDto;
+import com.Urban_India.payload.BusinessServiceDto;
 import com.Urban_India.payload.DiscountDto;
 import com.Urban_India.service.BusinessService;
 import com.Urban_India.service.DiscountService;
 import com.Urban_India.service.ImageDataService;
 import com.Urban_India.util.MapperUtil;
+import com.Urban_India.util.Response;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -47,14 +49,30 @@ public class BusinessController {
         return new ResponseEntity<>(businessDto1, HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public List<BusinessDto> getAllBusiness(){
         return businessService.getAllBusiness();
     }
+
     @PostMapping("/discount/{id}")
     public ResponseEntity<DiscountDto> createDiscount(@PathVariable(value = "id") Long businessId, @RequestBody DiscountDto discountDto){
 //        logger.error("called discount controller");
         DiscountDto createdDiscount=discountService.createDiscount(businessId,discountDto);
         return new ResponseEntity<DiscountDto>(createdDiscount, HttpStatus.CREATED);
     }
+
+    @GetMapping
+    private ResponseEntity<Response<BusinessDto>> getBusinessServiceById(@RequestParam(value = "id",required = true) Long id){
+        Response<BusinessDto> response = new Response<>();
+        try {
+            BusinessDto businessDto  = this.businessService.getBusinessById(id);
+            response.setDto(businessDto);
+            response.setHttpStatus(HttpStatus.OK);
+        }catch (Exception ex){
+            response.setErrorMessage(ex.getMessage());
+            response.setHttpStatus(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(response, response.getHttpStatus());
+    }
+
 }

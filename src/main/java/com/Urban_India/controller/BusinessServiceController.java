@@ -3,9 +3,11 @@ package com.Urban_India.controller;
 import com.Urban_India.entity.Image;
 import com.Urban_India.payload.BusinessDto;
 import com.Urban_India.payload.BusinessServiceDto;
+import com.Urban_India.payload.BusinessServiceFilter;
 import com.Urban_India.repository.ImageRepositroy;
 import com.Urban_India.service.BusinessServiceProvider;
 import com.Urban_India.service.ImageDataService;
+import com.Urban_India.util.Response;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -40,9 +42,29 @@ public class BusinessServiceController {
         return new ResponseEntity<>(businessServiceDto, HttpStatus.CREATED);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     private ResponseEntity<List<BusinessServiceDto>> getAllBusinessService(){
-        List<BusinessServiceDto> businessServiceDtos = this.businessServiceProvider.getAllBusinessService();
+        List<BusinessServiceDto> businessServiceDtos = this.businessServiceProvider.getAllBusinessServices();
+        return new ResponseEntity<>(businessServiceDtos,HttpStatus.OK);
+    }
+
+    @GetMapping
+    private ResponseEntity<Response<BusinessServiceDto>> getBusinessServiceById(@RequestParam(value = "id",required = true) Long id){
+        Response<BusinessServiceDto> response = new Response<>();
+        try {
+            BusinessServiceDto businessServiceDto = this.businessServiceProvider.getBusinessSeriveById(id);
+            response.setDto(businessServiceDto);
+            response.setHttpStatus(HttpStatus.OK);
+        }catch (Exception ex){
+            response.setErrorMessage(ex.getMessage());
+            response.setHttpStatus(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(response, response.getHttpStatus());
+    }
+
+    @PostMapping("/all-filter")
+    private ResponseEntity<List<BusinessServiceDto>> getAllFilteredBusinessService(@RequestBody BusinessServiceFilter businessServiceFilter){
+        List<BusinessServiceDto> businessServiceDtos = this.businessServiceProvider.getAllBusinessServices();
         return new ResponseEntity<>(businessServiceDtos,HttpStatus.OK);
     }
 }
