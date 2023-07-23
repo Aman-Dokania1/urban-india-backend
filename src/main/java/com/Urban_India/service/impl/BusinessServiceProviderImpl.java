@@ -9,6 +9,10 @@ import com.Urban_India.repository.*;
 import com.Urban_India.service.BusinessServiceProvider;
 import com.Urban_India.util.MapperUtil;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -85,8 +89,19 @@ public class BusinessServiceProviderImpl implements BusinessServiceProvider {
     }
 
     @Override
-    public List<BusinessServiceDto> getAllFilterBusinessServices(BusinessServiceFilter businessServiceFilter) {
-        return null;
+    public Page<BusinessServiceDto> getAllFilterBusinessServices(BusinessServiceFilter businessServiceFilter) {
+        Pageable pageable = null;
+
+        if(Objects.isNull(businessServiceFilter.getUnpaged()) && businessServiceFilter.getUnpaged()){
+            pageable = Pageable.unpaged();
+        }else {
+            pageable = PageRequest.of(businessServiceFilter.getPage(), businessServiceFilter.getPer());
+        }
+        Page<BusinessService> businessServicePage = this.businessServiceRepository.getAllFilterBusinessService(
+                businessServiceFilter.getListOfBusinessIds(),businessServiceFilter.getListOfBusinessServiceIds(),
+                businessServiceFilter.getMinPrice(),businessServiceFilter.getMaxPrice(),businessServiceFilter.getSearchQuery(),pageable);
+        List<BusinessServiceDto> businessServiceDtoList  = businessServicePage.stream().map(businessService -> businessService.toBusinessServiceDto()).toList();
+        return new PageImpl<>(businessServiceDtoList,pageable,businessServicePage.getTotalElements());
     }
 
     private User currentUser(){

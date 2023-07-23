@@ -2,6 +2,7 @@ package com.Urban_India.service;
 
 import com.Urban_India.payload.BusinessServiceDto;
 import com.Urban_India.payload.BusinessServiceFilter;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
 
@@ -12,5 +13,5 @@ public interface BusinessServiceProvider {
 
     public  BusinessServiceDto getBusinessSeriveById(Long id);
 
-    public List<BusinessServiceDto> getAllFilterBusinessServices(BusinessServiceFilter businessServiceFilter);
+    public Page<BusinessServiceDto> getAllFilterBusinessServices(BusinessServiceFilter businessServiceFilter);
 }

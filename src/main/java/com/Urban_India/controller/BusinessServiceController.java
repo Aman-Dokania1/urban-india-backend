@@ -11,6 +11,7 @@ import com.Urban_India.util.Response;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,9 +44,17 @@ public class BusinessServiceController {
     }
 
     @GetMapping("/all")
-    private ResponseEntity<List<BusinessServiceDto>> getAllBusinessService(){
-        List<BusinessServiceDto> businessServiceDtos = this.businessServiceProvider.getAllBusinessServices();
-        return new ResponseEntity<>(businessServiceDtos,HttpStatus.OK);
+    private ResponseEntity<Response> getAllBusinessService(){
+        Response<List<BusinessServiceDto>> response = new Response<>();
+        try {
+            List<BusinessServiceDto> businessServiceDtos = this.businessServiceProvider.getAllBusinessServices();
+            response.setDto(businessServiceDtos);
+            response.setHttpStatus(HttpStatus.OK);
+        }catch (Exception ex){
+            response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            response.setErrorMessage(ex.getMessage());
+        }
+        return new ResponseEntity<>(response,response.getHttpStatus());
     }
 
     @GetMapping
@@ -63,8 +72,16 @@ public class BusinessServiceController {
     }
 
     @PostMapping("/all-filter")
-    private ResponseEntity<List<BusinessServiceDto>> getAllFilteredBusinessService(@RequestBody BusinessServiceFilter businessServiceFilter){
-        List<BusinessServiceDto> businessServiceDtos = this.businessServiceProvider.getAllBusinessServices();
-        return new ResponseEntity<>(businessServiceDtos,HttpStatus.OK);
+    private ResponseEntity<Response> getAllFilteredBusinessService(@RequestBody BusinessServiceFilter businessServiceFilter){
+        Response<Page<BusinessServiceDto>> response = new Response<>();
+        try {
+            Page<BusinessServiceDto> businessServiceDtos = this.businessServiceProvider.getAllFilterBusinessServices(businessServiceFilter);
+            response.setDto(businessServiceDtos);
+            response.setHttpStatus(HttpStatus.OK);
+        }catch (Exception ex){
+            response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            response.setErrorMessage(ex.getMessage());
+        }
+        return new ResponseEntity<>(response,response.getHttpStatus());
     }
 }
