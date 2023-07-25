@@ -16,8 +16,9 @@ public class BusinessServiceFilter {
     private List<Long> listOfBusinessIds;
     private List<Long> listOfBusinessServiceIds;
     private List<Long> listOfStatusIds;
-    private Double minPrice;
-    private Double maxPrice;
+    private List<Double> priceRange;
+//    private Double minPrice;
+//    private Double maxPrice;
     private String searchQuery;
     private List<String> sortField[];
     private Integer per;
