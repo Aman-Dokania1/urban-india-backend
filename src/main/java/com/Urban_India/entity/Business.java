@@ -10,7 +10,6 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import org.json.JSONObject;
 
-import javax.print.Doc;
 import java.util.List;
 import java.util.Objects;
 
@@ -50,7 +49,7 @@ public class Business {
     private List<BusinessService> businessServices;
 
     @OneToMany(mappedBy = "business",cascade = CascadeType.ALL)
-    private List<Discount> discountList;
+    private List<Coupon> couponList;
 
     @OneToMany(mappedBy = "business",cascade = CascadeType.ALL)
     List<Reviews> reviewsList;

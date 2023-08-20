@@ -5,6 +5,8 @@ import com.Urban_India.entity.ServiceProviderEntitiy;
 import com.Urban_India.exception.ResourceNotFoundException;
 import com.Urban_India.repository.RoleRepository;
 import com.Urban_India.repository.ServiceRepository;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -12,6 +14,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+@OpenAPIDefinition(info = @Info(title = "Urban India",version = "v 3.0",description = "Application like Urban India"))
 public class UrbanIndiaApplication  implements CommandLineRunner {
 
 	@Autowired

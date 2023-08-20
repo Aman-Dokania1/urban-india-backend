@@ -1,6 +1,5 @@
 package com.Urban_India.entity;
 
-import com.Urban_India.payload.BusinessDto;
 import com.Urban_India.payload.BusinessServiceDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,7 +29,7 @@ public class BusinessService {
 
     @OneToOne
     @JoinColumn(name = "discount_id",referencedColumnName = "id")
-    private Discount discount;
+    private Coupon coupon;
 
     @OneToOne
     @JoinColumn(name = "status_id",referencedColumnName = "id")
@@ -56,7 +55,7 @@ public class BusinessService {
             joinColumns = @JoinColumn(name = "business_service_id",referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "discount_id",referencedColumnName = "id")
     )
-    private List<Discount> discountList;
+    private List<Coupon> couponList;
 
     @OneToOne(mappedBy = "businessService")
     private Orders order;

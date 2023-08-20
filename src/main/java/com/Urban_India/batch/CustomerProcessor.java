@@ -1,7 +1,6 @@
 package com.Urban_India.batch;
 
 import com.Urban_India.batch.model.Customer;
-import io.swagger.models.auth.In;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.stereotype.Component;
 

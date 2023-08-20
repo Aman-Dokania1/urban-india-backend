@@ -1,12 +1,9 @@
 package com.Urban_India.controller;
 
-import com.Urban_India.entity.Business;
 import com.Urban_India.entity.Image;
 import com.Urban_India.payload.BusinessDto;
-import com.Urban_India.payload.BusinessServiceDto;
 import com.Urban_India.payload.DiscountDto;
 import com.Urban_India.service.BusinessService;
-import com.Urban_India.service.DiscountService;
 import com.Urban_India.service.ImageDataService;
 import com.Urban_India.util.MapperUtil;
 import com.Urban_India.util.Response;
@@ -14,7 +11,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
