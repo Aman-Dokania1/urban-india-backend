@@ -5,6 +5,7 @@ import com.Urban_India.entity.ServiceProviderEntitiy;
 import com.Urban_India.exception.ResourceNotFoundException;
 import com.Urban_India.repository.RoleRepository;
 import com.Urban_India.repository.ServiceRepository;
+import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.info.Info;
 import lombok.extern.slf4j.Slf4j;
@@ -15,6 +16,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @OpenAPIDefinition(info = @Info(title = "Urban India",version = "v 3.0",description = "Application like Urban India"))
+@EnableEncryptableProperties
 public class UrbanIndiaApplication  implements CommandLineRunner {
 
 	@Autowired

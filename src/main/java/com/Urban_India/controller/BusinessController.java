@@ -28,7 +28,7 @@ public class BusinessController {
 
     private ImageDataService imageDataService;
     private BusinessService businessService;
-    private DiscountService discountService;
+//    private DiscountService discountService;
     private MapperUtil mapperUtil;
     private ObjectMapper mapper;
 
@@ -50,12 +50,12 @@ public class BusinessController {
         return businessService.getAllBusiness();
     }
 
-    @PostMapping("/discount/{id}")
-    public ResponseEntity<DiscountDto> createDiscount(@PathVariable(value = "id") Long businessId, @RequestBody DiscountDto discountDto){
-//        logger.error("called discount controller");
-        DiscountDto createdDiscount=discountService.createDiscount(businessId,discountDto);
-        return new ResponseEntity<DiscountDto>(createdDiscount, HttpStatus.CREATED);
-    }
+//    @PostMapping("/discount/{id}")
+//    public ResponseEntity<DiscountDto> createDiscount(@PathVariable(value = "id") Long businessId, @RequestBody DiscountDto discountDto){
+////        logger.error("called discount controller");
+//        DiscountDto createdDiscount=discountService.createDiscount(businessId,discountDto);
+//        return new ResponseEntity<DiscountDto>(createdDiscount, HttpStatus.CREATED);
+//    }
 
     @GetMapping
     private ResponseEntity<Response<BusinessDto>> getBusinessServiceById(@RequestParam(value = "id",required = true) Long id){

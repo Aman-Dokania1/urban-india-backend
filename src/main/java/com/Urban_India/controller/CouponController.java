@@ -112,11 +112,11 @@ public class CouponController {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CouponDto.class))
                     }), @ApiResponse(responseCode = "500",description = "server error")
     })
-    @PutMapping
-    private ResponseEntity<Response<CouponDto>> updateCoupon(@RequestBody CouponDto couponDto){
+    @PutMapping("{id}")
+    private ResponseEntity<Response<CouponDto>> updateCoupon(@PathVariable Long id,@RequestBody CouponDto couponDto){
         Response<CouponDto> response = new Response<>();
         try {
-            response.setDto(this.couponService.updateCoupon(couponDto));
+            response.setDto(this.couponService.updateCoupon(couponDto,id));
             response.setHttpStatus(HttpStatus.OK);
             return new ResponseEntity<>(response,HttpStatus.OK);
         }catch (Exception e){
@@ -134,11 +134,11 @@ public class CouponController {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class))
                     }), @ApiResponse(responseCode = "500",description = "server error")
     })
-    @DeleteMapping
-    private ResponseEntity<Boolean> deleteCoupon(@RequestBody CouponDto couponDto){
+    @DeleteMapping("{id}")
+    private ResponseEntity<Boolean> deleteCoupon(@PathVariable Long id){
         Response<CouponDto> response = new Response<>();
         try {
-            this.couponService.deleteCoupon(couponDto);
+            this.couponService.deleteCoupon(id);
             response.setDto(null);
             response.setHttpStatus(HttpStatus.OK);
             return new ResponseEntity<>(true,HttpStatus.OK);

@@ -36,6 +36,8 @@ public class Coupon {
     @Column(name = "minimum_amount")
     private Double minimumAmount;
 
+    private String description;
+
     @ManyToOne(fetch= FetchType.LAZY)
     @JoinColumn(name = "business_id")
     private Business business;
@@ -49,12 +51,12 @@ public class Coupon {
 
     public CouponDto toCouponDto(){
         return CouponDto.builder()
-                .id(this.id)
                 .startTime(this.startTime)
                 .endTime(this.endTime)
                 .code(this.code)
                 .percent(this.percent)
                 .minimumAmount(this.minimumAmount)
+                .description(this.description)
                 .build();
     }
 }

@@ -9,9 +9,9 @@ public interface CouponService {
 
     public CouponDto addCoupon(CouponDto couponDto);
 
-    public CouponDto updateCoupon(CouponDto couponDto);
+    public CouponDto updateCoupon(CouponDto couponDto,Long id);
 
-    public void deleteCoupon (CouponDto couponDto);
+    public void deleteCoupon (Long id);
 
     public List<CouponDto> getAllCoupon();
 

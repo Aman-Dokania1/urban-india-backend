@@ -18,23 +18,23 @@ import java.time.LocalDate;
 //@Schema(name = "this Dto is used for coupon related stuff")
 public class CouponDto {
 
-    Long id;
     private LocalDate startTime;
     private LocalDate endTime;
     private Double percent;
     private String code;
     private StatusEnum status;
     private Double minimumAmount;
+    private String description;
 
     public Coupon toCoupon(){
         return Coupon.builder()
-                .id(this.id)
                 .startTime(this.startTime)
                 .endTime(this.endTime)
                 .percent(this.percent)
                 .code(this.code)
                 .minimumAmount(this.minimumAmount)
-                .status(this.status).build();
+                .status(this.status)
+                .description(this.description).build();
     }
 
 }

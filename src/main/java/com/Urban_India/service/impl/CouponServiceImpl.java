@@ -39,20 +39,22 @@ public class CouponServiceImpl implements CouponService {
             }
 
             Coupon coupon = couponDto.toCoupon();
+            coupon.setId(null);
             coupon.setBusiness(business);
             return couponRepository.save(coupon).toCouponDto();
     }
 
     @Override
-    public CouponDto updateCoupon(CouponDto couponDto) {
-        Coupon coupon = this.couponRepository.findById(couponDto.getId()).orElseThrow(() -> new ResourceNotFoundException("Course","id",couponDto.getId().toString()));
+    public CouponDto updateCoupon(CouponDto couponDto,Long id) {
+        Coupon coupon = this.couponRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Coupon","id",id.toString()));
         Coupon updateCoupon = couponDto.toCoupon();
+        updateCoupon.setId(id);
         return this.couponRepository.save(updateCoupon).toCouponDto();
     }
 
     @Override
-    public void deleteCoupon(CouponDto couponDto) {
-        this.couponRepository.deleteById(couponDto.getId());
+    public void deleteCoupon(Long id) {
+        this.couponRepository.deleteById(id);
     }
 
     @Override
