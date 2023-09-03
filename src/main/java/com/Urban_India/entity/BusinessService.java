@@ -74,7 +74,7 @@ public class BusinessService {
                 .description(this.description)
                 .price(this.price)
                 .mode_id(this.mode_id)
-                .image(Objects.nonNull(this.image) ? this.image.getImageData().toString() : null)
+                .image(Objects.nonNull(this.image) ? this.image.getName() : null)
                 .businessName(this.business.getName())
                 .businessId(this.business.getId())
                 .serviceTypeId(this.service.getId())

@@ -58,6 +58,7 @@ public class SecurityConfig {
         http.csrf().disable().cors().configurationSource(request -> corsConfiguration).and().authorizeHttpRequests((authorize)->{
                     try {
                         authorize.requestMatchers("/api/auth/**").permitAll()
+                                .requestMatchers("/image/**").permitAll()
                                 .requestMatchers("/swagger-ui/index.html").permitAll()
                                 .requestMatchers("/job/batch/**").permitAll()
                                 .requestMatchers("/api/business/**").permitAll()

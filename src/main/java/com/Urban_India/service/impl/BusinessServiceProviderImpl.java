@@ -7,6 +7,7 @@ import com.Urban_India.payload.BusinessServiceDto;
 import com.Urban_India.payload.BusinessServiceFilter;
 import com.Urban_India.repository.*;
 import com.Urban_India.service.BusinessServiceProvider;
+import com.Urban_India.service.ImageDataService;
 import com.Urban_India.util.MapperUtil;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -18,7 +19,11 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,8 +39,10 @@ public class BusinessServiceProviderImpl implements BusinessServiceProvider {
     private BusinessServiceRepository businessServiceRepository;
     private StatusRepository statusRepository;
     private UserRepository userRepository;
+    private ImageDataService imageDataService;
     @Override
-    public BusinessServiceDto createBusinessService(BusinessServiceDto businessServiceDto) {
+    @Transactional
+    public BusinessServiceDto createBusinessService(BusinessServiceDto businessServiceDto, MultipartFile file) throws IOException {
         BusinessService businessService = businessServiceDto.toBusinessService();
         Business business= currentUser().getBusiness();
 
@@ -63,16 +70,17 @@ public class BusinessServiceProviderImpl implements BusinessServiceProvider {
 //                    .orElseThrow(()->new ResourceNotFoundException("address","id",String.valueOf(businessServiceDto.getAddressId())));
 //        }
 
-
+        Image image = null;
+        if(Objects.nonNull(file) && !file.isEmpty()){
+            image = imageDataService.saveImage(file);
+        }
         businessService.setBusiness(business);
         businessService.setService(serviceProviderEntitiy);
         businessService.setAddress(address);
+        businessService.setImage(image);
 
         BusinessService savedBusinessService=businessServiceRepository.save(businessService);
-//        System.out.println(business.getBusinessServices());
-//        System.out.println(serviceProviderEntitiy.getBusinessServices());
-        BusinessServiceDto businessServiceDto1=savedBusinessService.toBusinessServiceDto();
-        return businessServiceDto1;
+       return savedBusinessService.toBusinessServiceDto();
     }
 
     @Override

@@ -50,7 +50,7 @@ public class ImageDataServiceImpl implements ImageDataService {
     @Override
     public Image saveImage(MultipartFile file) throws IOException {
         Image image =imageDataRepository.save(Image.builder()
-                .name(file.getOriginalFilename())
+                .name(System.currentTimeMillis()+file.getOriginalFilename())
                 .type(file.getContentType())
                 .imageData(ImageUtil.compressImage(file.getBytes())).build());
         return image;

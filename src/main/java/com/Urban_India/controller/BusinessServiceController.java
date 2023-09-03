@@ -29,17 +29,11 @@ public class BusinessServiceController {
 
     private BusinessServiceProvider businessServiceProvider;
 
-    private ImageDataService imageDataService;
-
     private ObjectMapper objectMapper;
     @PostMapping
     private ResponseEntity<BusinessServiceDto> createBusinessService(@Valid @RequestParam("data") String data, @RequestParam(name = "file",required = false) MultipartFile file ) throws IOException {
-        Image image =null;
-        if(Objects.nonNull(file) && !file.isEmpty()){
-            image=imageDataService.saveImage(file);
-        }
         BusinessServiceDto businessServiceDto=objectMapper.readValue(data,BusinessServiceDto.class);
-        businessServiceDto=businessServiceProvider.createBusinessService(businessServiceDto);
+        businessServiceDto=businessServiceProvider.createBusinessService(businessServiceDto,file);
         return new ResponseEntity<>(businessServiceDto, HttpStatus.CREATED);
     }
 
