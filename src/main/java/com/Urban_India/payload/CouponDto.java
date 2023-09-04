@@ -20,6 +20,7 @@ public class CouponDto {
 
     private LocalDate startTime;
     private LocalDate endTime;
+    private Long id;
     private Double percent;
     private String code;
     private StatusEnum status;
@@ -28,6 +29,7 @@ public class CouponDto {
 
     public Coupon toCoupon(){
         return Coupon.builder()
+                .id(this.id)
                 .startTime(this.startTime)
                 .endTime(this.endTime)
                 .percent(this.percent)

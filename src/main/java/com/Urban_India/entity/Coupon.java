@@ -51,6 +51,7 @@ public class Coupon {
 
     public CouponDto toCouponDto(){
         return CouponDto.builder()
+                .id(this.id)
                 .startTime(this.startTime)
                 .endTime(this.endTime)
                 .code(this.code)
