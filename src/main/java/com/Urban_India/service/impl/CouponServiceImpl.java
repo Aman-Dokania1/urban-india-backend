@@ -5,10 +5,15 @@ import com.Urban_India.entity.Coupon;
 import com.Urban_India.entity.User;
 import com.Urban_India.exception.ResourceNotFoundException;
 import com.Urban_India.exception.UrbanApiException;
+import com.Urban_India.payload.BusinessServiceDto;
 import com.Urban_India.payload.CouponDto;
+import com.Urban_India.payload.CouponFilter;
 import com.Urban_India.repository.CouponRepository;
 import com.Urban_India.repository.UserRepository;
 import com.Urban_India.service.CouponService;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -67,6 +72,14 @@ public class CouponServiceImpl implements CouponService {
     public CouponDto getCouponById(Long id) {
         Coupon coupon =  this.couponRepository.findById(id).orElseThrow(()->new ResourceNotFoundException("Course","id",id.toString()));
         return coupon.toCouponDto();
+    }
+
+    @Override
+    public List<CouponDto> getFilteredCoupons(CouponFilter couponFilter){
+        Pageable pageable = Pageable.unpaged();
+        Page<Coupon> couponsPage = this.couponRepository.getAllFilterCoupons(couponFilter.getListOfBusinessIds(), pageable);
+        List<CouponDto> couponDtoList = couponsPage.stream().map(couponService ->couponService.toCouponDto()).toList();
+        return couponDtoList;
     }
 
     private User currentUser(){

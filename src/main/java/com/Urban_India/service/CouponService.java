@@ -2,6 +2,7 @@ package com.Urban_India.service;
 
 import com.Urban_India.entity.Coupon;
 import com.Urban_India.payload.CouponDto;
+import com.Urban_India.payload.CouponFilter;
 
 import java.util.List;
 
@@ -16,4 +17,6 @@ public interface CouponService {
     public List<CouponDto> getAllCoupon();
 
     public  CouponDto getCouponById(Long id);
+
+    public List<CouponDto> getFilteredCoupons(CouponFilter couponFilter);
 }

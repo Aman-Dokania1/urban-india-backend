@@ -2,7 +2,10 @@ package com.Urban_India.controller;
 
 import com.Urban_India.exception.ResourceNotFoundException;
 import com.Urban_India.exception.UrbanApiException;
+import com.Urban_India.payload.BusinessServiceDto;
+import com.Urban_India.payload.BusinessServiceFilter;
 import com.Urban_India.payload.CouponDto;
+import com.Urban_India.payload.CouponFilter;
 import com.Urban_India.service.CouponService;
 import com.Urban_India.util.Response;
 import io.swagger.v3.oas.annotations.Operation;
@@ -83,6 +86,7 @@ public class CouponController {
                     }), @ApiResponse(responseCode = "404",description = "coupon doesn't exist with given id"),
             @ApiResponse(responseCode = "500",description = "server error")
     })
+
     @GetMapping("{id}")
     private ResponseEntity<Response<CouponDto>> getCouponById(@PathVariable Long id){
         Response<CouponDto> response = new Response<>();
@@ -103,6 +107,8 @@ public class CouponController {
             return new ResponseEntity<>(response,HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    
 
 
     @Operation(summary = "update the existing coupon")
@@ -148,5 +154,19 @@ public class CouponController {
             response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
             return new ResponseEntity<>(false,HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/all")
+    private ResponseEntity<Response> getAllFilteredCoupon(@RequestBody CouponFilter couponFilter){
+        Response<List<CouponDto>> response = new Response<>();
+        try {
+            List<CouponDto> couponDtos = this.couponService.getFilteredCoupons(couponFilter);
+            response.setDto(couponDtos);
+            response.setHttpStatus(HttpStatus.OK);
+        }catch (Exception ex){
+            response.setHttpStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+            response.setErrorMessage(ex.getMessage());
+        }
+        return new ResponseEntity<>(response,response.getHttpStatus());
     }
 }
