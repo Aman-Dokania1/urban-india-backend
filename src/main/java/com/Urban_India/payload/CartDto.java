@@ -14,7 +14,5 @@ import java.util.List;
 @SuperBuilder
 public class CartDto {
 
-    private Long id;
-    private Long businessId;
-    private List<BusinessService> businessServiceList;
+    private Long businessServiceId;
 }
