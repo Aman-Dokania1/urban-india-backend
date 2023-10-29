@@ -54,6 +54,9 @@ public class Business {
     @OneToMany(mappedBy = "business",cascade = CascadeType.ALL)
     List<Reviews> reviewsList;
 
+//    @OneToMany(mappedBy = "cart",cascade = CascadeType.ALL)
+//    List<Cart> cartList;
+
     @Transient
     DocumentsModel documentsModel;
 

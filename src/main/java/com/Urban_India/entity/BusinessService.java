@@ -67,6 +67,9 @@ public class BusinessService {
     @JoinColumn(name = "image_id", referencedColumnName = "id")
     private Image image;
 
+    @OneToMany(mappedBy = "businessServices")
+    private List<CartItem> cartItems;
+
     public BusinessServiceDto toBusinessServiceDto(){
         return BusinessServiceDto.builder()
                 .id(this.id)

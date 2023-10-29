@@ -19,7 +19,7 @@ import java.time.LocalDate;
 public class CouponDto {
 
     private LocalDate startTime;
-    private long id;
+    private Long id;
     private LocalDate endTime;
     private Double percent;
     private String code;
