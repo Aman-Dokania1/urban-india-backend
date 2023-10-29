@@ -17,6 +17,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,10 +39,14 @@ public class AuthServiceImpl implements AuthService {
         Authentication authentication=authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginDto.getUserNameOrEmail(),loginDto.getPassword()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+        if(authentication.isAuthenticated()) {
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        String token=jwtTokenProvider.generateToken(authentication);
-        return token;
+            String token = jwtTokenProvider.generateToken(authentication);
+            return token;
+        }else {
+            throw new UsernameNotFoundException("Authentication failed !");
+        }
 
     }
 

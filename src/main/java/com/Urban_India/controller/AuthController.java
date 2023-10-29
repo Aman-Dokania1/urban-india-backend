@@ -50,7 +50,6 @@ public class AuthController {
 
     @PostMapping(value = {"auth/login","auth/signin"})
     private ResponseEntity<JwtAuthResponse> login(@RequestBody LoginDto loginDto){
-        System.out.println("called>>>>>>>>>>>");
         String token=authService.login(loginDto);
 
         JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
