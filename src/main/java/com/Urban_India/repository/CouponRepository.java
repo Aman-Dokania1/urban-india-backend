@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CouponRepository extends JpaRepository<Coupon,Long> {
 
-     @Query("SELECT c FROM Coupon c WHERE (COALESCE(:businessIds) IS NUll OR c.business.id IN :businessIds)")
+     @Query(value = "SELECT c FROM Coupon c WHERE (COALESCE(:businessIds) IS NUll OR c.business.id IN :businessIds)")
     public Page<Coupon> getAllFilterCoupons(List<Long> businessIds, Pageable pageable );
 
 
