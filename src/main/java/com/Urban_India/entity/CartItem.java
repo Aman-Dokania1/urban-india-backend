@@ -29,4 +29,6 @@ public class CartItem {
     @JoinColumn(name = "business_service_id", referencedColumnName = "id")
     private BusinessService businessServices;
 
+    
+
 }
