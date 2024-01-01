@@ -1,13 +1,12 @@
 package com.Urban_India.service.impl;
 
-import com.Urban_India.entity.Business;
 import com.Urban_India.entity.BusinessService;
 import com.Urban_India.entity.Cart;
 import com.Urban_India.entity.CartItem;
 import com.Urban_India.entity.User;
 import com.Urban_India.exception.ResourceNotFoundException;
 import com.Urban_India.exception.UrbanApiException;
-import com.Urban_India.payload.CartDto;
+import com.Urban_India.payload.CartItemDto;
 import com.Urban_India.repository.BusinessRepository;
 import com.Urban_India.repository.BusinessServiceRepository;
 import com.Urban_India.repository.CartItemRepository;
@@ -19,10 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Service
 @AllArgsConstructor
@@ -32,35 +28,55 @@ public class CartServiceImpl implements CartService {
 
     private CartRepository cartRepository;
 
-    private CartItemRepository cartItemRepostory;
-    
-    private BusinessRepository businessRepository;
+    private CartItemRepository cartItemRepository;
 
     private BusinessServiceRepository businessServiceRepository;
 
 
 
     @Override
-    public CartDto addCartItem(CartDto cartDto) {
+    public CartItemDto addCartItem(CartItemDto cartItemDto) {
         User user = currentUser();
         Cart cart = cartRepository.findByUser(user);
-        BusinessService businessServices = businessServiceRepository.findById(cartDto.getBusinessServiceId()).orElseThrow(()->new ResourceNotFoundException("BusinessService","id",null));
+        BusinessService businessService = businessServiceRepository.findById(cartItemDto.getBusinessServiceId()).orElseThrow(()->new ResourceNotFoundException("BusinessService","id",null));
+        // Created cart for user if cart is not exist
         if(Objects.isNull(cart)){
-            cart = cartRepository.save(Cart.builder().business(businessServices.getBusiness()).user(user).build());
+            cart = cartRepository.save(Cart.builder().business(businessService.getBusiness()).user(user).build());
         }
-        if(!cart.getBusiness().getId().equals(businessServices.getBusiness().getId())){
+        // If cart is not belong to any business then set business with business of cart item
+        if(Objects.isNull(cart.getBusiness())){
+            cart.setBusiness(businessService.getBusiness());
+        }
+        if(!cart.getBusiness().getId().equals(businessService.getBusiness().getId())){
             throw new UrbanApiException(HttpStatus.UNPROCESSABLE_ENTITY,
-                    "Can not add"+businessServices.getTitle()+"in cart");
+                    "Can not add"+businessService.getTitle()+"in cart");
+        }
+        CartItem cartItem = CartItem.builder().businessService(businessService).cart(cart).build();
+        return cartItemRepository.save(cartItem).toCartItemDto();
+    }
+
+    @Override
+    public void deleteCartItem(Long cartItemId) {
+        CartItem cartItem = cartItemRepository.findById(cartItemId).orElseThrow(()->new ResourceNotFoundException("CartItem","id",null));
+        User user = currentUser();
+        Cart cart = cartRepository.findByUser(user);
+
+        // If cart is not exist for user
+        if(Objects.isNull(cart)){
+            throw new UrbanApiException(HttpStatus.UNPROCESSABLE_ENTITY,"Cart is not exist for userName "+user.getUsername());
         }
 
-        CartItem item = CartItem.builder().businessServices(businessServices).cart(cart).build();
-        cartItemRepostory.save(item);
+        if(!cart.getBusiness().getId().equals(cartItem.getBusinessService().getBusiness().getId())){
+            throw new UrbanApiException(HttpStatus.UNPROCESSABLE_ENTITY,"User has cart for different business. Business is "+cart.getBusiness().getName());
+        }
 
-        // List<CartItem> items = List.of(item);
-        // cart.setCartItems(items);
-        // cart = cartRepository.save(cart);
-        return null;
+        if(cart.getCartItems().contains(cartItem)){
+            cartItemRepository.deleteById(cartItemId);
+        }else {
+            throw new UrbanApiException(HttpStatus.UNPROCESSABLE_ENTITY,"Cart is not containing cart item with id "+ cartItemId);
+        }
     }
+
 
     private User currentUser(){
         String username= SecurityContextHolder.getContext().getAuthentication().getName();

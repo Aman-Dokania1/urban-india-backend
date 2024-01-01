@@ -1,11 +1,13 @@
 package com.Urban_India.service;
 
-import com.Urban_India.payload.CartDto;
+import com.Urban_India.payload.CartItemDto;
 import org.springframework.stereotype.Service;
 
 @Service
 public interface CartService {
 
-    public CartDto addCartItem(CartDto cartDto);
+    public CartItemDto addCartItem(CartItemDto cartDto);
+
+    public void deleteCartItem(Long cartItemId);
 
 }

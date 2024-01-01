@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.http.HttpStatus;
 
 import java.util.Date;
 
@@ -14,4 +15,5 @@ public class ErrorDetails {
     private Date timeStamp;
     private String message;
     private String details;
+    private HttpStatus httpStatus;
 }
