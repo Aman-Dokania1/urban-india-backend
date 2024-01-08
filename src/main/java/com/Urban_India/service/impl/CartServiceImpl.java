@@ -18,7 +18,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -33,6 +36,15 @@ public class CartServiceImpl implements CartService {
     private BusinessServiceRepository businessServiceRepository;
 
 
+
+    @Override
+    public List<CartItemDto> getAllCartItems(){
+        User user = currentUser();
+        Cart cart = cartRepository.findByUser(user);
+        if (Objects.isNull(cart))
+            return new ArrayList<CartItemDto>();
+        return cart.getCartItems().stream().map(CartItem::toCartItemDto).collect(Collectors.toList());
+    }
 
     @Override
     public CartItemDto addCartItem(CartItemDto cartItemDto) {
@@ -80,7 +92,6 @@ public class CartServiceImpl implements CartService {
 
     private User currentUser(){
         String username= SecurityContextHolder.getContext().getAuthentication().getName();
-        User user =userRepository.findByUsername(username).orElseThrow(()->new ResourceNotFoundException("user","username",username));
-        return user;
+        return userRepository.findByUsername(username).orElseThrow(()->new ResourceNotFoundException("user","username",username));
     }
 }

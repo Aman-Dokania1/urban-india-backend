@@ -39,11 +39,11 @@ public class BusinessService {
     @JoinColumn(name = "address_id", referencedColumnName = "id")
     private Address address;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "service_id")
     private ServiceProviderEntitiy service;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "business_id")
     private Business business;
 
@@ -67,7 +67,7 @@ public class BusinessService {
     @JoinColumn(name = "image_id", referencedColumnName = "id")
     private Image image;
 
-    @OneToMany(mappedBy = "businessServices")
+    @OneToMany(mappedBy = "businessService")
     private List<CartItem> cartItems;
 
     public BusinessServiceDto toBusinessServiceDto(){

@@ -45,7 +45,7 @@ public class Business {
     @JoinColumn(name = "seller_id",referencedColumnName = "id")
     private User user ;
 
-    @OneToMany(mappedBy = "business",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "business")
     private List<BusinessService> businessServices;
 
     @OneToMany(mappedBy = "business",cascade = CascadeType.ALL)

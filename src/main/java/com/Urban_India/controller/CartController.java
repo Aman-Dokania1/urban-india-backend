@@ -1,5 +1,6 @@
 package com.Urban_India.controller;
 
+import com.Urban_India.payload.BusinessServiceDto;
 import com.Urban_India.payload.CartItemDto;
 import com.Urban_India.service.CartService;
 import com.Urban_India.util.Response;
@@ -10,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/cart")
 public class CartController {
@@ -17,6 +20,15 @@ public class CartController {
     @Autowired
     private CartService cartService;
 
+    @GetMapping
+    private ResponseEntity<Response<List<CartItemDto>>> getAllCartItems(){
+        Response<List<CartItemDto>> response = new Response<>();
+        List<CartItemDto> cartItems = cartService.getAllCartItems();
+        response.setDto(cartItems);
+        response.setHttpStatus(HttpStatus.OK);
+        response.setSuccessMessage("Cart Items listed");
+        return new ResponseEntity<>(response, response.getHttpStatus());
+    }
 
     @PostMapping
     private ResponseEntity<Response<CartItemDto>> addCartItem(@RequestBody CartItemDto cartDto ){
