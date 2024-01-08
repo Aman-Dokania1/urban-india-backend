@@ -13,6 +13,7 @@ import com.Urban_India.repository.CartItemRepository;
 import com.Urban_India.repository.CartRepository;
 import com.Urban_India.repository.UserRepository;
 import com.Urban_India.service.CartService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -47,6 +48,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public CartItemDto addCartItem(CartItemDto cartItemDto) {
         User user = currentUser();
         Cart cart = cartRepository.findByUser(user);
@@ -61,7 +63,7 @@ public class CartServiceImpl implements CartService {
         }
         if(!cart.getBusiness().getId().equals(businessService.getBusiness().getId())){
             throw new UrbanApiException(HttpStatus.UNPROCESSABLE_ENTITY,
-                    "Can not add"+businessService.getTitle()+"in cart");
+                    "Can not add "+businessService.getTitle()+" in cart. Because user has cart with business "+ businessService.getBusiness().getName());
         }
         CartItem cartItem = CartItem.builder().businessService(businessService).cart(cart).build();
         return cartItemRepository.save(cartItem).toCartItemDto();

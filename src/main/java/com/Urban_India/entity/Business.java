@@ -2,6 +2,7 @@ package com.Urban_India.entity;
 
 import com.Urban_India.model.DocumentsModel;
 import com.Urban_India.payload.BusinessDto;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -45,7 +46,8 @@ public class Business {
     @JoinColumn(name = "seller_id",referencedColumnName = "id")
     private User user ;
 
-    @OneToMany(mappedBy = "business")
+    @OneToMany(mappedBy = "business",cascade = CascadeType.ALL)
+    @JsonManagedReference
     private List<BusinessService> businessServices;
 
     @OneToMany(mappedBy = "business",cascade = CascadeType.ALL)
