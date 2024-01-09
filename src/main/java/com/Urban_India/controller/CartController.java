@@ -31,10 +31,12 @@ public class CartController {
     }
 
     @PostMapping
-    private ResponseEntity<Response<CartItemDto>> addCartItem(@RequestBody CartItemDto cartDto ){
+    private ResponseEntity<Response<CartItemDto>> addCartItem(@RequestBody CartItemDto cartItemDtoDto ){
         Response<CartItemDto> response = new Response<>();
-        cartDto = cartService.addCartItem(cartDto);
-        response.setDto(cartDto);
+        cartItemDtoDto = cartService.addCartItem(cartItemDtoDto);
+//        cartDto.setCartDto(null);
+        cartItemDtoDto.getCartDto().setCartItemsDtos(null);
+        response.setDto(cartItemDtoDto);
         response.setHttpStatus(HttpStatus.CREATED);
         response.setSuccessMessage("Cart Item is Added Successfully");
         return new ResponseEntity<>(response, HttpStatus.CREATED);

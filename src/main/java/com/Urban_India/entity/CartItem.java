@@ -1,6 +1,8 @@
 package com.Urban_India.entity;
 
 import com.Urban_India.payload.CartItemDto;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -24,6 +26,7 @@ public class CartItem {
 
     @ManyToOne
     @JoinColumn(name = "cart_id",referencedColumnName = "id")
+    @JsonBackReference(value = "cartItemEntityReference")
     private Cart cart;
 
     @ManyToOne
@@ -35,8 +38,8 @@ public class CartItem {
                 .cartId(Objects.isNull(this.cart) ? null :this.cart.getId())
                 .businessServiceId(Objects.isNull(this.businessService) ? null :this.businessService.getId())
                 .quantity(this.quantity)
-                .businessService(this.businessService)
-                .cart(this.cart)
+                .businessService(Objects.nonNull(this.businessService) ? this.businessService.toBusinessServiceDto() : null)
+                .cartDto(Objects.isNull(this.cart) ? null :this.cart.toCartDto())
                 .build();
     }
 

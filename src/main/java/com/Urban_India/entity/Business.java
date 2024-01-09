@@ -47,7 +47,7 @@ public class Business {
     private User user ;
 
     @OneToMany(mappedBy = "business",cascade = CascadeType.ALL)
-    @JsonManagedReference
+    @JsonManagedReference(value = "businessEntityAReference")
     private List<BusinessService> businessServices;
 
     @OneToMany(mappedBy = "business",cascade = CascadeType.ALL)

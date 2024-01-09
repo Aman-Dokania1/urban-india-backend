@@ -2,6 +2,7 @@ package com.Urban_India.entity;
 
 import com.Urban_India.payload.BusinessServiceDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -42,12 +43,13 @@ public class BusinessService {
 
     @ManyToOne
     @JoinColumn(name = "service_id")
+    @JsonBackReference("serviceProviderEntityAReference")
     private ServiceProviderEntitiy service;
 
 
     @ManyToOne
     @JoinColumn(name = "business_id")
-    @JsonBackReference
+    @JsonBackReference("businessEntityAReference")
     private Business business;
 
     @OneToMany(mappedBy = "businessService",cascade = CascadeType.ALL)

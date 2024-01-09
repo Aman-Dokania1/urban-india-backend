@@ -1,11 +1,16 @@
 package com.Urban_India.entity;
 
+import com.Urban_India.payload.CartDto;
+import com.Urban_India.payload.CartItemDto;
+import com.Urban_India.util.MapperUtil;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jdk.jfr.Threshold;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -27,6 +32,15 @@ public class Cart {
     private Business business;
 
     @OneToMany(mappedBy = "cart")
+    @JsonManagedReference(value = "cartItemEntityReference")
     List<CartItem> cartItems;
+
+    public CartDto toCartDto(){
+        return CartDto.builder()
+                .user(this.user)
+                .businessDto(Objects.isNull(this.business) ? null : this.business.toBusinessDto())
+                .cartItemsDtos(Objects.isNull(this.cartItems) ? null : MapperUtil.mapList(this.cartItems, CartItemDto.class))
+        .build();
+    }
 
 }

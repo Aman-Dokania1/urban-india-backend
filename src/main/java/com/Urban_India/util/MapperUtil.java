@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 @Component
 public class MapperUtil {
 
-    private ModelMapper mapper=new ModelMapper();
+    private static ModelMapper mapper=new ModelMapper();
 
 //    public ServiceProviderEntitiy mapToService(ServiceDto serviceDto){
 //        return mapper.map(serviceDto, ServiceProviderEntitiy.class);
@@ -54,11 +54,11 @@ public class MapperUtil {
 //        return mapper.map(businessServiceDto,BusinessService.class);
 //    }
 //
-    public <S,T> T mapObject(S soruce, Class<T> targetClass){
+    public static  <S,T> T mapObject(S soruce, Class<T> targetClass){
         return mapper.map(soruce,targetClass);
     }
 
-    public <S,T> List<T> mapList(List<S> source, Class<T> targetClass) {
+    public static  <S,T> List<T> mapList(List<S> source, Class<T> targetClass) {
         return source
                 .stream()
                 .map(element -> mapper.map(element, targetClass))

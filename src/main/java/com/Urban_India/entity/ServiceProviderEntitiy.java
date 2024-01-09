@@ -1,5 +1,6 @@
 package com.Urban_India.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,5 +26,6 @@ public class ServiceProviderEntitiy {
     private Image image;
 
     @OneToMany(mappedBy = "service",cascade = CascadeType.ALL)
-    private List<BusinessService> businessServices=new ArrayList<>();
+    @JsonManagedReference(value = "serviceProviderEntityAReference")
+    private List<BusinessService> businessServices;
 }
