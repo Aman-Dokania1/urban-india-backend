@@ -34,8 +34,8 @@ public class CartController {
     private ResponseEntity<Response<CartItemDto>> addCartItem(@RequestBody CartItemDto cartItemDtoDto ){
         Response<CartItemDto> response = new Response<>();
         cartItemDtoDto = cartService.addCartItem(cartItemDtoDto);
-//        cartDto.setCartDto(null);
-        cartItemDtoDto.getCartDto().setCartItemsDtos(null);
+//        cartItemDtoDto.setCartDto(null);
+//        cartItemDtoDto.getCartDto().setCartItemsDtos(null);
         response.setDto(cartItemDtoDto);
         response.setHttpStatus(HttpStatus.CREATED);
         response.setSuccessMessage("Cart Item is Added Successfully");

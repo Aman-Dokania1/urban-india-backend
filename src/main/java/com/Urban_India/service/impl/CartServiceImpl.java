@@ -65,7 +65,7 @@ public class CartServiceImpl implements CartService {
             throw new UrbanApiException(HttpStatus.UNPROCESSABLE_ENTITY,
                     "Can not add "+businessService.getTitle()+" in cart. Because user has cart with business "+ businessService.getBusiness().getName());
         }
-        CartItem cartItem = CartItem.builder().businessService(businessService).cart(cart).build();
+        CartItem cartItem = CartItem.builder().businessService(businessService).build();
         return cartItemRepository.save(cartItem).toCartItemDto();
     }
 

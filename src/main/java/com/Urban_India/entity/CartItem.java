@@ -24,10 +24,14 @@ public class CartItem {
 
     private Long quantity;
 
-    @ManyToOne
-    @JoinColumn(name = "cart_id",referencedColumnName = "id")
-    @JsonBackReference(value = "cartItemEntityReference")
-    private Cart cart;
+    /**
+     * It was giving error because of bidirectional mapping.It was giving error of Circular Reference.
+     */
+//    @ManyToOne
+//    @JoinColumn(name = "cart_id",referencedColumnName = "id")
+////    @JsonBackReference(value = "cartItemEntityReference")
+//    @JsonBackReference
+//    private Cart cart;
 
     @ManyToOne
     @JoinColumn(name = "business_service_id", referencedColumnName = "id")
@@ -35,11 +39,11 @@ public class CartItem {
 
     public CartItemDto toCartItemDto(){
         return CartItemDto.builder()
-                .cartId(Objects.isNull(this.cart) ? null :this.cart.getId())
+//                .cartId(Objects.isNull(this.cart) ? null :this.cart.getId())
                 .businessServiceId(Objects.isNull(this.businessService) ? null :this.businessService.getId())
                 .quantity(this.quantity)
                 .businessService(Objects.nonNull(this.businessService) ? this.businessService.toBusinessServiceDto() : null)
-                .cartDto(Objects.isNull(this.cart) ? null :this.cart.toCartDto())
+//                .cartDto(Objects.isNull(this.cart) ? null :this.cart.toCartDto())
                 .build();
     }
 

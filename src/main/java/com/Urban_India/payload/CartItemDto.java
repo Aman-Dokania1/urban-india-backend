@@ -25,7 +25,7 @@ public class CartItemDto {
     public CartItem toCartItem(){
         return CartItem.builder()
                 .businessService(Objects.nonNull(this.businessService) ? this.businessService.toBusinessService() : null)
-                .cart(Objects.isNull(this.cartDto) ? null :this.cartDto.toCart())
+//                .cart(Objects.isNull(this.cartDto) ? null :this.cartDto.toCart())
                 .quantity(this.quantity)
                 .build();
     }

@@ -31,8 +31,10 @@ public class Cart {
     @JoinColumn(name = "business_id",referencedColumnName = "id")
     private Business business;
 
-    @OneToMany(mappedBy = "cart")
-    @JsonManagedReference(value = "cartItemEntityReference")
+    @OneToMany
+    @JoinColumn(name = "cart_id")
+//    @JsonManagedReference
+//    @JsonManagedReference(value = "cartItemEntityReference")
     List<CartItem> cartItems;
 
     public CartDto toCartDto(){
