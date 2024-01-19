@@ -65,11 +65,12 @@ public class CartServiceImpl implements CartService {
             throw new UrbanApiException(HttpStatus.UNPROCESSABLE_ENTITY,
                     "Can not add "+businessService.getTitle()+" in cart. Because user has cart with business "+ businessService.getBusiness().getName());
         }
-        CartItem cartItem = CartItem.builder().businessService(businessService).build();
+        CartItem cartItem = CartItem.builder().businessService(businessService).cart(cart).build();
         return cartItemRepository.save(cartItem).toCartItemDto();
     }
 
     @Override
+    @Transactional
     public void deleteCartItem(Long cartItemId) {
         CartItem cartItem = cartItemRepository.findById(cartItemId).orElseThrow(()->new ResourceNotFoundException("CartItem","id",null));
         User user = currentUser();
@@ -86,11 +87,11 @@ public class CartServiceImpl implements CartService {
 
         if(cart.getCartItems().contains(cartItem)){
             // If cart item contains only one item then we should remove business with cart.
-            if(cart.getCartItems().size() == 1){
+            cartItemRepository.deleteById(cartItemId);
+            if(cart.getCartItems().isEmpty()){
                 cart.setBusiness(null);
                 cartRepository.save(cart);
             }
-            cartItemRepository.deleteById(cartItemId);
         }else {
             throw new UrbanApiException(HttpStatus.UNPROCESSABLE_ENTITY,"Cart is not containing cart item with id "+ cartItemId);
         }

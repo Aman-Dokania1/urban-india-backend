@@ -16,6 +16,7 @@ import java.util.Objects;
 @SuperBuilder
 public class CartItemDto {
 
+    private Long id;
     private Long businessServiceId;
     private Long cartId;
     private Long quantity;
