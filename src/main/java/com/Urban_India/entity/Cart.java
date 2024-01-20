@@ -31,9 +31,18 @@ public class Cart {
     @JoinColumn(name = "business_id",referencedColumnName = "id")
     private Business business;
 
-    @OneToMany(mappedBy = "cart", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL ,fetch = FetchType.LAZY)
     @JsonManagedReference
     List<CartItem> cartItems;
+
+    public void dismissCartItem(CartItem cartItem) {
+        this.cartItems.remove(cartItem);
+    }
+
+    public void dismissChildren() {
+        this.cartItems.forEach(CartItem::dismissCart); // SYNCHRONIZING THE OTHER SIDE OF RELATIONSHIP
+        this.cartItems.clear();
+    }
 
     public CartDto toCartDto(){
         return CartDto.builder()

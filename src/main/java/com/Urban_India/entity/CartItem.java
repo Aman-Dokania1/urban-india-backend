@@ -36,6 +36,12 @@ public class CartItem {
     @JoinColumn(name = "business_service_id", referencedColumnName = "id")
     private BusinessService businessService;
 
+    @PreRemove
+    public void dismissCart() {
+        this.cart.dismissCartItem(this); //SYNCHRONIZING THE OTHER SIDE OF RELATIONSHIP
+        this.cart = null;
+    }
+
     public CartItemDto toCartItemDto(){
         return CartItemDto.builder()
 //                .cartId(Objects.isNull(this.cart) ? null :this.cart.getId())
