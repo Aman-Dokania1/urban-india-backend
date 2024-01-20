@@ -46,14 +46,14 @@ public class Business {
     @JoinColumn(name = "seller_id",referencedColumnName = "id")
     private User user ;
 
-    @OneToMany(mappedBy = "business",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "business",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     @JsonManagedReference(value = "businessEntityAReference")
     private List<BusinessService> businessServices;
 
-    @OneToMany(mappedBy = "business",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "business",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<Coupon> couponList;
 
-    @OneToMany(mappedBy = "business",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "business",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     List<Reviews> reviewsList;
 
 //    @OneToMany(mappedBy = "cart",cascade = CascadeType.ALL)

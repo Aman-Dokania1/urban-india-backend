@@ -52,7 +52,7 @@ public class BusinessService {
     @JsonBackReference("businessEntityAReference")
     private Business business;
 
-    @OneToMany(mappedBy = "businessService",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "businessService",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<ChildService> childServiceList;
 
     @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
@@ -65,14 +65,15 @@ public class BusinessService {
     @OneToOne(mappedBy = "businessService")
     private Orders order;
 
-    @OneToMany(mappedBy = "businessService",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "businessService",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     List<Reviews> reviewsList;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id", referencedColumnName = "id")
     private Image image;
 
-    @OneToMany(mappedBy = "businessService")
+    @OneToMany(mappedBy = "businessService",fetch = FetchType.LAZY)
+    @JsonManagedReference(value = "businessServiceCartItemsReference")
     private List<CartItem> cartItems;
 
     public BusinessServiceDto toBusinessServiceDto(){

@@ -66,6 +66,8 @@ public class CartServiceImpl implements CartService {
                     "Can not add "+businessService.getTitle()+" in cart. Because user has cart with business "+ businessService.getBusiness().getName());
         }
         CartItem cartItem = CartItem.builder().businessService(businessService).cart(cart).build();
+//        cart.getCartItems().add(cartItem);
+//        cart = cartRepository.save(cart);
         return cartItemRepository.save(cartItem).toCartItemDto();
     }
 
@@ -87,11 +89,11 @@ public class CartServiceImpl implements CartService {
 
         if(cart.getCartItems().contains(cartItem)){
             // If cart item contains only one item then we should remove business with cart.
-            cartItemRepository.deleteById(cartItemId);
+            cart.getCartItems().remove(cartItem);
             if(cart.getCartItems().isEmpty()){
                 cart.setBusiness(null);
-                cartRepository.save(cart);
             }
+            cartItemRepository.deleteById(cartItemId);
         }else {
             throw new UrbanApiException(HttpStatus.UNPROCESSABLE_ENTITY,"Cart is not containing cart item with id "+ cartItemId);
         }
