@@ -50,4 +50,11 @@ public class User {
 
      @OneToOne(mappedBy = "user")
      private Orders order;
+
+     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+     @JoinTable(name = "user_address",
+     joinColumns = @JoinColumn(name = "user_id"),
+     inverseJoinColumns = @JoinColumn(name = "address_id"))
+    private List<Address> addressList;
+
 }
