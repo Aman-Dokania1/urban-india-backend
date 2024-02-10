@@ -49,7 +49,7 @@ public class User {
      private List<ServiceRequest> serviceRequests;
 
      @OneToOne(mappedBy = "user")
-     private Orders order;
+     private Order order;
 
      @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
      @JoinTable(name = "user_address",

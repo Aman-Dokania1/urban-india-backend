@@ -62,9 +62,6 @@ public class BusinessService {
     )
     private List<Coupon> couponList;
 
-    @OneToOne(mappedBy = "businessService")
-    private Orders order;
-
     @OneToMany(mappedBy = "businessService",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     List<Reviews> reviewsList;
 

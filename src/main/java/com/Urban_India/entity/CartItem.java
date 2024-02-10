@@ -6,6 +6,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDate;
+import java.util.Locale;
 import java.util.Objects;
 
 
@@ -35,6 +37,9 @@ public class CartItem {
     @JoinColumn(name = "business_service_id", referencedColumnName = "id")
     @JsonBackReference(value = "businessServiceCartItemsReference")
     private BusinessService businessService;
+
+    @Column(name = "completion_date")
+    private LocalDate completionDate;
 
 //    @PreRemove
 //    public void dismissCart() {
