@@ -4,6 +4,7 @@ import com.Urban_India.entity.CartItem;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Getter
@@ -18,6 +19,7 @@ public class CartItemDto {
     private Long cartId;
     private Long quantity;
     private BusinessServiceDto businessServiceDto;
+    private LocalDate completionDate;
 //    private CartDto cartDto;
 
     public CartItem toCartItem(){
@@ -26,6 +28,7 @@ public class CartItemDto {
                 .businessService(Objects.nonNull(this.businessServiceDto) ? this.businessServiceDto.toBusinessService() : null)
 //                .cart(Objects.isNull(this.cartDto) ? null :this.cartDto.toCart())
                 .quantity(this.quantity)
+                .completionDate(this.completionDate)
                 .build();
     }
 }

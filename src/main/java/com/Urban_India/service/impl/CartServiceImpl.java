@@ -65,7 +65,11 @@ public class CartServiceImpl implements CartService {
             throw new UrbanApiException(HttpStatus.UNPROCESSABLE_ENTITY,
                     "Can not add "+businessService.getTitle()+" in cart. Because user has cart with business "+ businessService.getBusiness().getName());
         }
-        CartItem cartItem = CartItem.builder().businessService(businessService).cart(cart).build();
+        CartItem cartItem = CartItem.builder()
+                .businessService(businessService)
+                .cart(cart)
+                .completionDate(cartItemDto.getCompletionDate())
+                .build();
 //        cart.getCartItems().add(cartItem);
 //        cart = cartRepository.save(cart);
         return cartItemRepository.save(cartItem).toCartItemDto();
@@ -97,6 +101,24 @@ public class CartServiceImpl implements CartService {
         }else {
             throw new UrbanApiException(HttpStatus.UNPROCESSABLE_ENTITY,"Cart is not containing cart item with id "+ cartItemId);
         }
+    }
+
+    @Override
+    public CartItemDto updateCartItem(CartItemDto cartItemDto) {
+        if(Objects.isNull(cartItemDto.getId())){
+            throw new ResourceNotFoundException("Cart Item","ID",null);
+        }
+        CartItem cartItem = cartItemRepository.findById(cartItemDto.getId()).orElseThrow(()->new ResourceNotFoundException("Cart Item","ID",String.valueOf(cartItemDto.getId())));
+        User user = currentUser();
+        Cart cart = cartRepository.findByUser(user);
+        if(!cartItem.getCart().getId().equals(cart.getId())){
+            throw new UrbanApiException(HttpStatus.UNAUTHORIZED,"You are not authorized");
+        }
+
+        cartItem.setCompletionDate(cartItemDto.getCompletionDate());
+        cartItem.setQuantity(cartItem.getQuantity());
+        cartItem = cartItemRepository.save(cartItem);
+        return cartItem.toCartItemDto();
     }
 
 

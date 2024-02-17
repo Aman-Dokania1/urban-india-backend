@@ -14,4 +14,6 @@ public interface CartService {
 
     public void deleteCartItem(Long cartItemId);
 
+    public CartItemDto updateCartItem(CartItemDto cartItemDto);
+
 }

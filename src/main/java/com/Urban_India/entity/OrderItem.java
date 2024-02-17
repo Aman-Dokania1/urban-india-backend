@@ -2,6 +2,7 @@ package com.Urban_India.entity;
 
 import com.Urban_India.Enum.OrderItemStatusEnum;
 import com.Urban_India.Enum.OrderStatusEnum;
+import com.Urban_India.payload.OrderItemDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.experimental.SuperBuilder;
@@ -39,4 +40,16 @@ public class OrderItem {
 
     @Column(name = "business_service_name")
     private String businessServiceName;
+
+    public OrderItemDto toOrdertItemDto(){
+        return OrderItemDto.builder()
+                .id(this.id)
+                .businessServiceName(this.businessServiceName)
+                .businessServiceId(this.businessServiceId)
+                .completionDate(this.completionDate)
+                .quantity(this.quantity)
+                .businessServicePrice(this.businessServicePrice)
+                .status(this.orderItemStatusEnum)
+                .build();
+    }
 }
