@@ -14,6 +14,7 @@ import org.json.JSONObject;
 @AllArgsConstructor
 @SuperBuilder
 public class AddressDto {
+    private Long id; 
     private String google_location_code;
     private String state;
     private String city;

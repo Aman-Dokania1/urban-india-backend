@@ -66,6 +66,7 @@ public class Address {
             String pin = address.has("pin") ? address.getString("pin") : null;
             String plotNo = address.has("plotNo") ? address.getString("plotNo") : null;
             return AddressDto.builder()
+                    .id(this.id)
                     .city(city)
                     .pin(pin)
                     .state(state)

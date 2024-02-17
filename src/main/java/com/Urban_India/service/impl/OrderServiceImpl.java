@@ -26,13 +26,14 @@ public class OrderServiceImpl implements OrderService {
     private AddressRepository addressRepository;
     @Autowired
     private CouponRepository couponRepository;
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
     private OrderItemRepository orderItemRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
     @Transactional

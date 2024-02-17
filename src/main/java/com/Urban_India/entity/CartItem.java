@@ -56,7 +56,7 @@ public class CartItem {
                 .id(this.id)
                 .businessServiceId(Objects.isNull(this.businessService) ? null :this.businessService.getId())
                 .quantity(this.quantity)
-                .businessServiceDto(Objects.nonNull(this.businessService) ? this.businessService.toBusinessServiceDto() : null)
+                .businessService(Objects.nonNull(this.businessService) ? this.businessService.toBusinessServiceDto() : null)
                 .completionDate(completionDate)
 //                .cartDto(Objects.isNull(this.cart) ? null :this.cart.toCartDto())
                 .build();

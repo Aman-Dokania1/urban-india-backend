@@ -18,14 +18,14 @@ public class CartItemDto {
     private Long businessServiceId;
     private Long cartId;
     private Long quantity;
-    private BusinessServiceDto businessServiceDto;
+    private BusinessServiceDto businessService;
     private LocalDate completionDate;
 //    private CartDto cartDto;
 
     public CartItem toCartItem(){
         return CartItem.builder()
                 .id(this.id)
-                .businessService(Objects.nonNull(this.businessServiceDto) ? this.businessServiceDto.toBusinessService() : null)
+                .businessService(Objects.nonNull(this.businessService) ? this.businessService.toBusinessService() : null)
 //                .cart(Objects.isNull(this.cartDto) ? null :this.cartDto.toCart())
                 .quantity(this.quantity)
                 .completionDate(this.completionDate)
