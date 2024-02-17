@@ -74,6 +74,7 @@ public class OrderServiceImpl implements OrderService {
         cartItems.forEach(cartItem -> {
             orderItemList.add(cartItem.convertToOrderItem(finalOrder));
         });
+        order.setOrderItems(orderItemList);
         orderItemRepository.saveAll(orderItemList);
         order = orderRepository.findById(order.getId()).get();
         return order.toOrderDto();
