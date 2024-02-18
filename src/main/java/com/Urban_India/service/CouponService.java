@@ -18,5 +18,5 @@ public interface CouponService {
 
     public  CouponDto getCouponById(Long id);
 
-    public List<CouponDto> getFilteredCoupons(CouponFilter couponFilter);
+    public List<CouponDto> getFilteredCoupons(Long businessId);
 }

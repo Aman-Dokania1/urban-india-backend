@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/coupon")
 public class CouponController {
 
     @Autowired
@@ -37,7 +36,7 @@ public class CouponController {
             }), @ApiResponse(responseCode = "412",description = "validation error"),
                 @ApiResponse(responseCode = "500",description = "server error")
     })
-    @PostMapping
+    @PostMapping("/api/coupon")
     private ResponseEntity<Response<CouponDto>> addCoupon(@RequestBody CouponDto couponDto){
         Response<CouponDto> response = new Response<>();
         try {
@@ -64,7 +63,7 @@ public class CouponController {
                             @Content(mediaType = "application/json",array = @ArraySchema(schema = @Schema(implementation = CouponDto.class)))
                     }), @ApiResponse(responseCode = "500",description = "server error")
     })
-    @GetMapping
+    @GetMapping("/api/coupon")
     private ResponseEntity<Response<List<CouponDto>>> getAllCoupon(){
         Response<List<CouponDto>> response = new Response<>();
         try {
@@ -88,7 +87,7 @@ public class CouponController {
             @ApiResponse(responseCode = "500",description = "server error")
     })
 
-    @GetMapping("{id}")
+    @GetMapping("/api/coupon/{id}")
     private ResponseEntity<Response<CouponDto>> getCouponById(@PathVariable Long id){
         Response<CouponDto> response = new Response<>();
         try {
@@ -119,7 +118,7 @@ public class CouponController {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = CouponDto.class))
                     }), @ApiResponse(responseCode = "500",description = "server error")
     })
-    @PutMapping("{id}")
+    @PutMapping("/api/coupon/{id}")
     private ResponseEntity<Response<CouponDto>> updateCoupon(@PathVariable Long id,@RequestBody CouponDto couponDto){
         Response<CouponDto> response = new Response<>();
         try {
@@ -141,7 +140,7 @@ public class CouponController {
                             @Content(mediaType = "application/json", schema = @Schema(implementation = Boolean.class))
                     }), @ApiResponse(responseCode = "500",description = "server error")
     })
-    @DeleteMapping("{id}")
+    @DeleteMapping("/api/coupon/{id}")
     private ResponseEntity<Boolean> deleteCoupon(@PathVariable Long id){
         Response<CouponDto> response = new Response<>();
         try {
@@ -157,11 +156,11 @@ public class CouponController {
         }
     }
 
-    @GetMapping("/all")
-    private ResponseEntity<Response> getAllFilteredCoupon(@RequestBody CouponFilter couponFilter){
+    @GetMapping("api/businesses/{businessId}/coupons")
+    private ResponseEntity<Response<List<CouponDto>>> getAllFilteredCoupon(@PathVariable Long businessId ){
         Response<List<CouponDto>> response = new Response<>();
         try {
-            List<CouponDto> couponDtos = this.couponService.getFilteredCoupons(couponFilter);
+            List<CouponDto> couponDtos = this.couponService.getFilteredCoupons(businessId);
             response.setDto(couponDtos);
             response.setHttpStatus(HttpStatus.OK);
         }catch (Exception ex){

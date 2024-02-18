@@ -75,11 +75,10 @@ public class CouponServiceImpl implements CouponService {
     }
 
     @Override
-    public List<CouponDto> getFilteredCoupons(CouponFilter couponFilter){
+    public List<CouponDto> getFilteredCoupons(Long businessId){
         Pageable pageable = Pageable.unpaged();
-        Page<Coupon> couponsPage = this.couponRepository.getAllFilterCoupons(couponFilter.getListOfBusinessIds(), pageable);
-        List<CouponDto> couponDtoList = couponsPage.stream().map(couponService ->couponService.toCouponDto()).toList();
-        return couponDtoList;
+        Page<Coupon> couponsPage = this.couponRepository.getAllFilterCoupons(businessId, pageable);
+        return couponsPage.stream().map(Coupon::toCouponDto).toList();
     }
 
     private User currentUser(){
