@@ -108,7 +108,7 @@ public class BusinessServiceProviderImpl implements BusinessServiceProvider {
         Page<BusinessService> businessServicePage = this.businessServiceRepository.getAllFilterBusinessService(
                 businessServiceFilter.getListOfBusinessIds(),businessServiceFilter.getListOfBusinessServiceIds(),
                 businessServiceFilter.getPriceRange().get(0),businessServiceFilter.getPriceRange().get(1),businessServiceFilter.getSearchQuery(),pageable);
-        List<BusinessServiceDto> businessServiceDtoList  = businessServicePage.stream().map(businessService -> businessService.toBusinessServiceDto()).toList();
+        List<BusinessServiceDto> businessServiceDtoList  = businessServicePage.stream().map(BusinessService::toBusinessServiceDto).toList();
         return new PageImpl<>(businessServiceDtoList,pageable,businessServicePage.getTotalElements());
     }
 
