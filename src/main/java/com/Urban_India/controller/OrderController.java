@@ -2,8 +2,8 @@ package com.Urban_India.controller;
 
 import com.Urban_India.payload.BusinessServiceDto;
 import com.Urban_India.payload.OrderDto;
-import com.Urban_India.payload.OrderFilter;
 import com.Urban_India.payload.OrderPlacedDto;
+import com.Urban_India.payload.PaginatedDto;
 import com.Urban_India.service.OrderService;
 import com.Urban_India.util.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,12 +40,14 @@ public class OrderController {
     }
 
     @GetMapping
-    private ResponseEntity<Response> getAllOrderes(@RequestParam("per") Integer per, @RequestParam("page") Integer page, @RequestParam("paginate") Boolean paginate ){
-        Response<Page<OrderDto>> response = new Response<>();
-        Page<OrderDto> orders = orderService.getAllOrders(per, page, paginate);
+    private ResponseEntity<Response<PaginatedDto<OrderDto>>> getAllOrders(@RequestParam(name = "per", defaultValue = "1" ) Integer per, @RequestParam(name = "page", defaultValue = "0") Integer page, @RequestParam(name = "paginate", defaultValue = "true") boolean paginate ){
+        Response<PaginatedDto<OrderDto>> response = new Response<>();
+        PaginatedDto<OrderDto> paginatedOrders = orderService.getAllOrders(per, page, paginate);
         response.setHttpStatus(HttpStatus.OK);
-        response.setDto(orders);
+        response.setDto(paginatedOrders);
         response.setSuccessMessage("Order lists");
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+
 }

@@ -4,7 +4,9 @@ import com.Urban_India.Enum.OrderItemStatusEnum;
 import com.Urban_India.Enum.OrderStatusEnum;
 import com.Urban_India.payload.OrderItemDto;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
@@ -12,6 +14,8 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "order_items")
 @SuperBuilder
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderItem {
 
     @Id

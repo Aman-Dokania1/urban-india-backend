@@ -3,12 +3,12 @@ package com.Urban_India.entity;
 import com.Urban_India.Enum.OrderStatusEnum;
 import com.Urban_India.payload.OrderDto;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import org.hibernate.annotations.Cascade;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 @SuperBuilder
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -88,8 +90,8 @@ public class Order {
                 .businessName(this.businessName)
                 .paymentId(this.paymentId)
                 .addressId(this.userAddressId)
-                .addressDto(new Address(userAddressId,address).toAddressDto())
-                .orderItemDtos(orderItems.stream().map(OrderItem::toOrdertItemDto).collect(Collectors.toList()))
+                .address(new Address(userAddressId,address).toAddressDto())
+                .orderItems(orderItems.stream().map(OrderItem::toOrdertItemDto).collect(Collectors.toList()))
                 .build();
     }
 }

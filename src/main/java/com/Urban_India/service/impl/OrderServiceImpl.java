@@ -5,6 +5,7 @@ import com.Urban_India.exception.ResourceNotFoundException;
 import com.Urban_India.exception.UrbanApiException;
 import com.Urban_India.payload.OrderDto;
 import com.Urban_India.payload.OrderPlacedDto;
+import com.Urban_India.payload.PaginatedDto;
 import com.Urban_India.repository.*;
 import com.Urban_India.service.OrderService;
 import jakarta.transaction.Transactional;
@@ -27,6 +28,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private CartRepository cartRepository;
+    @Autowired
+    private CartItemRepository cartItemRepository;
     @Autowired
     private AddressRepository addressRepository;
     @Autowired
@@ -82,21 +85,29 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderItems(orderItemList);
         orderItemRepository.saveAll(orderItemList);
         order = orderRepository.findById(order.getId()).get();
+        clearCart(cart);
         return order.toOrderDto();
     }
 
     @Override
-    public Page<OrderDto> getAllOrders(Integer per, Integer page, Boolean paginate) {
+    public PaginatedDto<OrderDto> getAllOrders(Integer per, Integer page, Boolean paginate) {
         Pageable pageable = paginate ? PageRequest.of(page, per) : Pageable.unpaged();
         Page<Order> ordersPage = orderRepository.findAll(pageable);
         List<OrderDto> orderDtoList = ordersPage.stream().map(Order::toOrderDto).toList();
-        return new PageImpl<>(orderDtoList, pageable, ordersPage.getTotalElements());
+        return new PaginatedDto<>(orderDtoList, page, per, ordersPage.getTotalElements());
     }
 
     @Override
     public OrderDto getOrderById(Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(()-> new ResourceNotFoundException("order", "id", String.valueOf(orderId)));
         return order.toOrderDto();
+    }
+
+    public void clearCart(Cart cart){
+        cartItemRepository.deleteAll(cart.getCartItems());
+        cart.setBusiness(null);
+        cart.setCartItems(null);
+        cartRepository.save(cart);
     }
 
 

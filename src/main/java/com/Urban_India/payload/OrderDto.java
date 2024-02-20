@@ -24,7 +24,7 @@ public class OrderDto {
     private OrderStatusEnum status;
     private Long paymentId;
     private Long addressId;
-    private AddressDto addressDto;
-    List<OrderItemDto> orderItemDtos;
+    private AddressDto address;
+    List<OrderItemDto> orderItems;
 
 }
