@@ -12,6 +12,7 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Entity
@@ -59,8 +60,15 @@ public class Order {
     @Builder.Default
     private OrderStatusEnum orderStatusEnum = OrderStatusEnum.IN_PROGRESS;
 
-    @OneToMany(mappedBy = "order",cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "order",cascade = {CascadeType.REMOVE,CascadeType.PERSIST},fetch = FetchType.LAZY,orphanRemoval = true)
     List<OrderItem> orderItems;
+
+    @Column(name = "price",nullable = false)
+    private Double price;
+
+    @Transient
+//    @Builder.Default
+    private Double effectivePrice;
 
 //    @OneToOne(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "business_service_id",referencedColumnName = "id")
@@ -80,6 +88,20 @@ public class Order {
 //    private Reviews review;
 
 
+    @PostLoad
+    private void setEffectivePrice(){
+        if(Objects.nonNull(this.couponId)){
+            this.effectivePrice = ((this.price)*(this.couponPercentage))/100.00;
+        }else {
+            this.effectivePrice = this.price;
+        }
+    }
+
+    @PostPersist
+    private void setEffectivePriceAfterSave(){
+        this.setEffectivePrice();
+    }
+
     public OrderDto toOrderDto(){
 
         CouponDto couponDto = CouponDto.builder().id(couponId).code(couponCode).percent(couponPercentage).build();
@@ -95,6 +117,8 @@ public class Order {
                 .addressId(this.userAddressId)
                 .address(new Address(userAddressId,address).toAddressDto())
                 .orderItems(orderItems.stream().map(OrderItem::toOrdertItemDto).collect(Collectors.toList()))
+                .price(this.price)
+                .effectivePrice(this.effectivePrice)
                 .build();
     }
 }

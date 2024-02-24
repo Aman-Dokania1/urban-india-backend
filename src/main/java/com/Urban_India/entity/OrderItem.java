@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "order_items")
@@ -22,8 +23,8 @@ public class OrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "order_id",nullable = false)
+    @ManyToOne()
+    @JoinColumn(name = "order_id")
     private Order order;
 
     @Column(name = "business_service_id",nullable = false)
@@ -37,13 +38,31 @@ public class OrderItem {
     @Builder.Default
     private OrderItemStatusEnum orderItemStatusEnum = OrderItemStatusEnum.PENDING;
 
-    @Column(name = "business_service_price")
+    @Column(name = "business_service_price",nullable = false)
     private double businessServicePrice;
 
     private Long quantity;
 
-    @Column(name = "business_service_name")
+    @Column(name = "business_service_name",nullable = false)
     private String businessServiceName;
+
+    @Transient
+//    @Builder.Default
+    private Double effectivePrice ;
+
+    @PostLoad
+    private void setEffectivePrice(){
+        if(Objects.nonNull(order.getCouponId())) {
+            effectivePrice = (order.getCouponPercentage() * this.businessServicePrice)/100.00;
+        }else {
+            effectivePrice = this.businessServicePrice;
+        }
+    }
+
+    @PostPersist
+    private void setEffectivePriceAfterSave(){
+        this.setEffectivePrice();
+    }
 
     public OrderItemDto toOrdertItemDto(){
         return OrderItemDto.builder()
@@ -54,6 +73,7 @@ public class OrderItem {
                 .quantity(this.quantity)
                 .businessServicePrice(this.businessServicePrice)
                 .status(this.orderItemStatusEnum)
+                .efffectivePrice(this.effectivePrice)
                 .build();
     }
 }

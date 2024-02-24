@@ -63,6 +63,11 @@ public class OrderServiceImpl implements OrderService {
         Business business = cart.getBusiness();
         List<BusinessService> businessServices = business.getBusinessServices();
 
+        double orderPrice = 0.0;
+        List<OrderItem> orderItemList = new ArrayList<>();
+        orderPrice = cartItems.stream().map(cartItem -> cartItem.getBusinessService().getPrice()).
+        reduce(0.0,Double::sum);
+
         Order order = Order.builder().
                 userAddressId(orderPlacedDto.getAddressId()).
                 address(address.getAddress())
@@ -75,16 +80,15 @@ public class OrderServiceImpl implements OrderService {
                 .businessName(business.getName())
                 .user(currentUser())
                 .paymentId(null)
+                .price(orderPrice)
                 .build();
-        order = orderRepository.save(order);
-        List<OrderItem> orderItemList = new ArrayList<>();
+
         Order finalOrder = order;
         cartItems.forEach(cartItem -> {
             orderItemList.add(cartItem.convertToOrderItem(finalOrder));
         });
         order.setOrderItems(orderItemList);
-        orderItemRepository.saveAll(orderItemList);
-        order = orderRepository.findById(order.getId()).get();
+        order = orderRepository.save(order);
         clearCart(cart);
         return order.toOrderDto();
     }

@@ -24,6 +24,8 @@ public class OrderDto {
     private Long paymentId;
     private Long addressId;
     private AddressDto address;
-    List<OrderItemDto> orderItems;
+    private List<OrderItemDto> orderItems;
+    private Double price;
+    private Double effectivePrice;
 
 }

@@ -24,6 +24,7 @@ public class OrderItemDto {
     private Long quantity;
     private LocalDate completionDate;
     private OrderItemStatusEnum status;
+    private Double efffectivePrice;
 
     public OrderItem toOrdertItem(){
         return OrderItem.builder()
@@ -34,6 +35,7 @@ public class OrderItemDto {
                 .quantity(this.quantity)
                 .businessServicePrice(this.businessServicePrice)
                 .orderItemStatusEnum(this.status)
+                .effectivePrice(this.efffectivePrice)
                 .build();
     }
 
