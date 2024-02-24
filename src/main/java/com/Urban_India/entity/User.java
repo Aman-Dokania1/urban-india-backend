@@ -48,8 +48,8 @@ public class User {
      )
      private List<ServiceRequest> serviceRequests;
 
-     @OneToOne(mappedBy = "user")
-     private Order order;
+     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+     private List<Order> orders;
 
      @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
      @JoinTable(name = "user_address",

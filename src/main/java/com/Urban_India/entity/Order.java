@@ -50,8 +50,8 @@ public class Order {
     @Column(name = "coupon_percentage")
     private Double couponPercentage;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @Enumerated(EnumType.STRING)
