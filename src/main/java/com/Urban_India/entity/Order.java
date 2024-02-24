@@ -57,7 +57,7 @@ public class Order {
     @Enumerated(EnumType.STRING)
     @Column(name = "status",nullable = false)
     @Builder.Default
-    private OrderStatusEnum orderStatusEnum = OrderStatusEnum.INPROGRESS;
+    private OrderStatusEnum orderStatusEnum = OrderStatusEnum.IN_PROGRESS;
 
     @OneToMany(mappedBy = "order",cascade = CascadeType.REMOVE,fetch = FetchType.LAZY)
     List<OrderItem> orderItems;
