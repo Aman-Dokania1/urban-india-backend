@@ -19,8 +19,7 @@ public class OrderDto {
     private Long businessId;
     private String businessName;
     private Long couponId;
-    private String couponName;
-    private Double couponPercentage;
+    private CouponDto coupon;
     private OrderStatusEnum status;
     private Long paymentId;
     private Long addressId;

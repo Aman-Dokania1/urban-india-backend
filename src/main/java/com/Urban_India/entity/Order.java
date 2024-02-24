@@ -1,6 +1,7 @@
 package com.Urban_India.entity;
 
 import com.Urban_India.Enum.OrderStatusEnum;
+import com.Urban_India.payload.CouponDto;
 import com.Urban_India.payload.OrderDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -80,11 +81,13 @@ public class Order {
 
 
     public OrderDto toOrderDto(){
+
+        CouponDto couponDto = CouponDto.builder().id(couponId).code(couponCode).percent(couponPercentage).build();
+
         return OrderDto.builder()
                 .id(this.id)
-                .couponId(this.couponId)
-                .couponName(this.couponCode)
-                .couponPercentage(this.couponPercentage)
+                .couponId(couponId)
+                .coupon(couponDto)
                 .status(this.orderStatusEnum)
                 .businessId(this.businessId)
                 .businessName(this.businessName)
