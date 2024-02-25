@@ -53,7 +53,7 @@ public class OrderItem {
     @PostLoad
     private void setEffectivePrice(){
         if(Objects.nonNull(order.getCouponId())) {
-            effectivePrice = (order.getCouponPercentage() * this.businessServicePrice)/100.00;
+            effectivePrice = this.businessServicePrice - (order.getCouponPercentage() * this.businessServicePrice)/100.00;
         }else {
             effectivePrice = this.businessServicePrice;
         }
@@ -73,7 +73,7 @@ public class OrderItem {
                 .quantity(this.quantity)
                 .businessServicePrice(this.businessServicePrice)
                 .status(this.orderItemStatusEnum)
-                .efffectivePrice(this.effectivePrice)
+                .effectivePrice(this.effectivePrice)
                 .build();
     }
 }

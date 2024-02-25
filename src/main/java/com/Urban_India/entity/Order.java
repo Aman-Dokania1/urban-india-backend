@@ -91,7 +91,7 @@ public class Order {
     @PostLoad
     private void setEffectivePrice(){
         if(Objects.nonNull(this.couponId)){
-            this.effectivePrice = ((this.price)*(this.couponPercentage))/100.00;
+            this.effectivePrice = this.price - ((this.price)*(this.couponPercentage))/100.00;
         }else {
             this.effectivePrice = this.price;
         }

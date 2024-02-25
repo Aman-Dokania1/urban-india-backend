@@ -46,8 +46,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderDto orderPlaced(OrderPlacedDto orderPlacedDto) {
-
-        Cart cart = cartRepository.findById(orderPlacedDto.getCartId()).orElseThrow(() ->new ResourceNotFoundException("Cart","id",orderPlacedDto.getCartId().toString()));
+        User user = currentUser();
+        Cart cart = cartRepository.findByUser(user);
 
         List<CartItem> cartItems = cart.getCartItems();
         if(cartItems.isEmpty()){

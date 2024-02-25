@@ -12,7 +12,5 @@ public class OrderPlacedDto {
 
     @NotNull(message = "Address can't be null.")
     private Long addressId;
-    @NotNull(message = "Cart can't be null.")
-    private Long cartId;
     private Long couponId;
 }
