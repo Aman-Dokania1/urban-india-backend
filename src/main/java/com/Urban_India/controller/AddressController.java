@@ -81,6 +81,6 @@ public class AddressController {
 
     private User getCurrentUser(){
         String username= SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByUsername(username).orElseThrow(()->new ResourceNotFoundException("user","username",username));
+        return userRepository.findByUsernameOrEmail(username, username).orElseThrow(()->new ResourceNotFoundException("user","username",username));
     }
 }

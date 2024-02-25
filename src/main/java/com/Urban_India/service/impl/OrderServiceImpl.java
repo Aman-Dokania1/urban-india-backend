@@ -95,8 +95,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public PaginatedDto<OrderDto> getAllOrders(Integer per, Integer page, Boolean paginate) {
+        User user = currentUser();
         Pageable pageable = paginate ? PageRequest.of(page, per) : Pageable.unpaged();
-        Page<Order> ordersPage = orderRepository.findAll(pageable);
+        Page<Order> ordersPage = orderRepository.getUsersOrders(user.getId(),pageable);
         List<OrderDto> orderDtoList = ordersPage.stream().map(Order::toOrderDto).toList();
         return new PaginatedDto<>(orderDtoList, page, per, ordersPage.getTotalElements());
     }

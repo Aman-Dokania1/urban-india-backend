@@ -4,6 +4,7 @@ import com.Urban_India.entity.Image;
 import com.Urban_India.entity.Role;
 import com.Urban_India.entity.User;
 import com.Urban_India.exception.UrbanApiException;
+import com.Urban_India.payload.IdTokenRequestDto;
 import com.Urban_India.payload.LoginDto;
 import com.Urban_India.payload.RegisterDto;
 import com.Urban_India.repository.ImageRepositroy;
@@ -11,7 +12,12 @@ import com.Urban_India.repository.RoleRepository;
 import com.Urban_India.repository.UserRepository;
 import com.Urban_India.security.JwtTokenProvider;
 import com.Urban_India.service.AuthService;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.http.HttpTransport;
+import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
 import lombok.AllArgsConstructor;
+import org.modelmapper.internal.Pair;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,6 +27,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -34,6 +41,9 @@ public class AuthServiceImpl implements AuthService {
     private AuthenticationManager authenticationManager;
 
     private JwtTokenProvider jwtTokenProvider;
+    private static final HttpTransport transport = new NetHttpTransport();
+    private static final JacksonFactory jsonFactory = new JacksonFactory();
+    private static final String MY_APP_GOOGLE_CLIENT_ID = "101242721034-svf9du5sbf1rehbmjqukg907v03p25dt.apps.googleusercontent.com";
     @Override
     public String login(LoginDto loginDto) {
         Authentication authentication=authenticationManager.authenticate(
@@ -81,6 +91,27 @@ public class AuthServiceImpl implements AuthService {
         user.setRoles(roles);
         userRepository.save(user);
         return "user registered successfully";
+    }
+
+    @Override
+    public Pair<Boolean, String >loginOAuth(IdTokenRequestDto idTokenRequest) {
+        try {
+            String idTokenString = idTokenRequest.getIdToken();
+            GoogleIdToken idToken = null;
+            idToken = GoogleIdToken.parse(jsonFactory, idTokenString);
+            if (idToken.getPayload().getAudience().equals(MY_APP_GOOGLE_CLIENT_ID)) {
+                GoogleIdToken.Payload payload = idToken.getPayload();
+                String email = payload.getEmail();
+                if (userRepository.existsByEmail(email))
+                    return Pair.of(true, jwtTokenProvider.generateToken(email));
+                else
+                    return Pair.of(false, email);
+        } else {
+            throw new UrbanApiException(HttpStatus.BAD_REQUEST, "ERROR");
+        }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 
