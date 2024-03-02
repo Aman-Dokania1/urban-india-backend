@@ -118,6 +118,6 @@ public class OrderServiceImpl implements OrderService {
 
     private User currentUser(){
         String username= SecurityContextHolder.getContext().getAuthentication().getName();
-        return userRepository.findByUsername(username).orElseThrow(()->new ResourceNotFoundException("user","username",username));
+        return userRepository.findByUsernameOrEmail(username, username).orElseThrow(()->new ResourceNotFoundException("user","username",username));
     }
 }

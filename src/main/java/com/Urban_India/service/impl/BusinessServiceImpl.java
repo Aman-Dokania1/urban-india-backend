@@ -61,7 +61,7 @@ public class BusinessServiceImpl implements BusinessService {
 
     private User currentUser(){
         String username= SecurityContextHolder.getContext().getAuthentication().getName();
-        User user =userRepository.findByUsername(username).orElseThrow(()->new ResourceNotFoundException("user","username",username));
+        User user =userRepository.findByUsernameOrEmail(username, username).orElseThrow(()->new ResourceNotFoundException("user","username",username));
         return user;
     }
 }
