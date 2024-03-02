@@ -40,7 +40,7 @@ public class OrderController {
     }
 
     @GetMapping
-    private ResponseEntity<Response<PaginatedDto<OrderDto>>> getAllOrders(@RequestParam(name = "per", defaultValue = "1" ) Integer per, @RequestParam(name = "page", defaultValue = "0") Integer page, @RequestParam(name = "paginate", defaultValue = "true") boolean paginate ){
+    private ResponseEntity<Response<PaginatedDto<OrderDto>>> getAllOrders(@RequestParam(name = "per", defaultValue = "10" ) Integer per, @RequestParam(name = "page", defaultValue = "0") Integer page, @RequestParam(name = "paginate", defaultValue = "true") boolean paginate ){
         Response<PaginatedDto<OrderDto>> response = new Response<>();
         PaginatedDto<OrderDto> paginatedOrders = orderService.getAllOrders(per, page, paginate);
         response.setHttpStatus(HttpStatus.OK);

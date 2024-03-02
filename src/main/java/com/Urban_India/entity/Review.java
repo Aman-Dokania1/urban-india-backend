@@ -1,10 +1,14 @@
 package com.Urban_India.entity;
 
+import com.Urban_India.payload.ReviewResponseDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+
+import java.util.List;
 
 @Entity
 @Table(name = "reviews")
@@ -16,6 +20,7 @@ public class Review {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String description;
 
     @Column(nullable = false)
@@ -36,5 +41,16 @@ public class Review {
     @OneToOne
     @JoinColumn(name = "order_item_id")
     private OrderItem orderItem;
+
+
+    public ReviewResponseDto toReviewResponseDto(){
+        return ReviewResponseDto.builder()
+                .rating(this.rating)
+                .description(this.description)
+                .businessServiceId(this.businessService.getId())
+                .businessServiceName(this.businessService.getTitle())
+                .userId(this.user.getId())
+                .build();
+    }
 
 }
