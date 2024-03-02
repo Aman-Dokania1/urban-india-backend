@@ -22,6 +22,7 @@ public class BusinessDto {
     private String name;
     private String tagline;
     private Image image;
+    private Double rating;
     private AddressModel addressModel;
     private DocumentsModel documentsModel;
 

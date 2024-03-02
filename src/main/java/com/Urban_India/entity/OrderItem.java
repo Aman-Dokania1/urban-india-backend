@@ -1,7 +1,6 @@
 package com.Urban_India.entity;
 
 import com.Urban_India.Enum.OrderItemStatusEnum;
-import com.Urban_India.Enum.OrderStatusEnum;
 import com.Urban_India.payload.OrderItemDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -45,6 +44,9 @@ public class OrderItem {
 
     @Column(name = "business_service_name",nullable = false)
     private String businessServiceName;
+
+    @OneToOne(mappedBy = "orderItem",cascade = {CascadeType.REMOVE,CascadeType.PERSIST},fetch = FetchType.LAZY,orphanRemoval = true)
+    Review review;
 
     @Transient
 //    @Builder.Default

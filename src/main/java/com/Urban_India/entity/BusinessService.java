@@ -4,11 +4,7 @@ import com.Urban_India.payload.BusinessServiceDto;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.List;
@@ -33,6 +29,14 @@ public class BusinessService {
 
     @Column(nullable = false)
     private double price;
+
+    @Column(name = "average_rating")
+    @Builder.Default
+    private Double averageRating = 0.0;
+
+    @Column(name = "total_reviews")
+    @Builder.Default
+    private Long totalReviews = 0L;
 
     private Long mode_id;
 
@@ -70,7 +74,7 @@ public class BusinessService {
     private List<Coupon> couponList;
 
     @OneToMany(mappedBy = "businessService",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    List<Reviews> reviewsList;
+    List<Review> reviewsList;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "image_id", referencedColumnName = "id")
@@ -87,6 +91,7 @@ public class BusinessService {
                 .description(this.description)
                 .price(this.price)
                 .mode_id(this.mode_id)
+                .rating(this.averageRating)
                 .image(Objects.nonNull(this.image) ? this.image.getName() : null)
                 .businessName(this.business.getName())
                 .businessId(this.business.getId())

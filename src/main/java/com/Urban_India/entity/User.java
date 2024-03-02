@@ -51,6 +51,7 @@ public class User {
      @OneToMany(mappedBy = "user",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
      private List<Order> orders;
 
+
      @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
      @JoinTable(name = "user_address",
      joinColumns = @JoinColumn(name = "user_id"),

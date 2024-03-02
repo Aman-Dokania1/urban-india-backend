@@ -4,10 +4,7 @@ import com.Urban_India.model.DocumentsModel;
 import com.Urban_India.payload.BusinessDto;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.json.JSONObject;
 
@@ -29,6 +26,15 @@ public class Business {
     private String name;
 
     private String tagline;
+
+    @Column(name = "average_rating")
+    @Builder.Default
+    private Double averageRating = 0.0;
+
+    @Column(name = "total_reviews")
+    @Builder.Default
+    private Long totalReviews = 0L;
+
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id", referencedColumnName = "id")
@@ -54,7 +60,7 @@ public class Business {
     private List<Coupon> couponList;
 
     @OneToMany(mappedBy = "business",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
-    List<Reviews> reviewsList;
+    List<Review> reviewsList;
 
 //    @OneToMany(mappedBy = "cart",cascade = CascadeType.ALL)
 //    List<Cart> cartList;
@@ -76,6 +82,7 @@ public class Business {
                 .id(this.id)
                 .name(this.name)
                 .tagline(this.tagline)
+                .rating(this.averageRating)
                 .documentsModel(this.documentsModel)
                 .addressModel(this.address.addressModel)
                 .build();
