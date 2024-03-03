@@ -45,11 +45,13 @@ public class Review {
 
     public ReviewResponseDto toReviewResponseDto(){
         return ReviewResponseDto.builder()
+                .id(this.id)
                 .rating(this.rating)
                 .description(this.description)
                 .businessServiceId(this.businessService.getId())
                 .businessServiceName(this.businessService.getTitle())
                 .userId(this.user.getId())
+                .userName(this.user.getFirstName() + this.getUser().getLastName())
                 .build();
     }
 

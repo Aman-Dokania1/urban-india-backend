@@ -11,8 +11,10 @@ import lombok.experimental.SuperBuilder;
 public class ReviewResponseDto {
 
 
+    private Long id;
     private Double rating;
     private Long userId;
+    private String userName;
     private Long businessServiceId;
     private String businessServiceName;
     private String description;
