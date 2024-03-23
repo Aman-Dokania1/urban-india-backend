@@ -3,10 +3,7 @@ package com.Urban_India.entity;
 import com.Urban_India.Enum.OrderItemStatusEnum;
 import com.Urban_India.payload.OrderItemDto;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
@@ -17,7 +14,8 @@ import java.util.Objects;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-@Data
+@Getter
+@Setter
 public class OrderItem {
 
     @Id

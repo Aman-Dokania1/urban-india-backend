@@ -5,6 +5,7 @@ import com.Urban_India.payload.ReviewRequestDto;
 import com.Urban_India.payload.ReviewResponseDto;
 import com.Urban_India.service.ReviewService;
 import com.Urban_India.util.Response;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +25,7 @@ public class ReviewController {
     ReviewService reviewService;
 
     @PostMapping("orderItem/{orderItemId}/reviews")
-    public ResponseEntity<Response<ReviewResponseDto>> createReview(@PathVariable Long orderItemId, @RequestBody ReviewRequestDto reviewRequest){
+    public ResponseEntity<Response<ReviewResponseDto>> createReview(@PathVariable Long orderItemId,@Valid @RequestBody ReviewRequestDto reviewRequest){
         Response<ReviewResponseDto> response = new Response<>();
         ReviewResponseDto reviewResponseDto = reviewService.postReview(orderItemId, reviewRequest);
         response.setDto(reviewResponseDto);
@@ -42,7 +43,7 @@ public class ReviewController {
     }
 
     @PutMapping("orderItem/{orderItemId}/review")
-    public ResponseEntity<Response<ReviewResponseDto>> updateOrderItemReviews(@PathVariable Long orderItemId,@RequestBody ReviewRequestDto reviewRequestDto){
+    public ResponseEntity<Response<ReviewResponseDto>> updateOrderItemReviews(@PathVariable Long orderItemId, @Valid @RequestBody ReviewRequestDto reviewRequestDto){
         Response<ReviewResponseDto> response = new Response<>();
         ReviewResponseDto reviewResponseDto = reviewService.updateOrderItemReview(orderItemId,reviewRequestDto);
         response.setDto(reviewResponseDto);

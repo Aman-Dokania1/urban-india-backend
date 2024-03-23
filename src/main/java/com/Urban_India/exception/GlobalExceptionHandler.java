@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -63,6 +64,12 @@ public class GlobalExceptionHandler  {
         return new ResponseEntity<>(new ExceptionResponse<>(ex,ex.getMessage(),error),HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    private ResponseEntity<ExceptionResponse<Exception>> handleGlobalException(HttpRequestMethodNotSupportedException exception,
+                                                                               WebRequest webRequest){
+//        ErrorDetails errorDetails=new ErrorDetails(new Date(),exception.getMessage(),webRequest.getDescription(false),HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(new ExceptionResponse<>(exception, exception.getMessage()), HttpStatus.METHOD_NOT_ALLOWED);
+    }
     @ExceptionHandler(Exception.class)
     private ResponseEntity<ExceptionResponse<Exception>> handleGlobalException(Exception exception,
                                                                 WebRequest webRequest){

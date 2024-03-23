@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
 
-    @Query("SELECT rw from Review rw where (COALESCE(:orderItemIds) IS NULL OR rw.orderItem.id IN (:orderItem))")
+    @Query("SELECT rw from Review rw where (COALESCE(:orderItemIds) IS NULL OR rw.orderItem.id IN (:orderItemIds))")
     public List<Review> getOrderItemReviews(@Nullable List<Long> orderItemIds);
 
     @Query("SELECT rw FROM Review rw WHERE (COALESCE(:businessIds) IS NULL OR rw.business.id IN (:businessIds))")

@@ -42,23 +42,27 @@ public class ReviewServiceImpl implements ReviewService {
 
     private static final Map<String,Integer> reviewActions = Map.of("ADD",1,"REMOVE",-1,"UPDATE",0);
 
-    @Override
-    @Transactional
-    public ReviewResponseDto postReview(Long orderItemId, ReviewRequestDto reviewRequest) {
+        @Override
+        @Transactional
+        public ReviewResponseDto postReview(Long orderItemId, ReviewRequestDto reviewRequest) {
 
-        OrderItem orderItem = orderItemRepository.findById(orderItemId).orElseThrow(() -> new ResourceNotFoundException("OrderItem","id", String.valueOf(orderItemId)));
-        Optional<BusinessService> businessService = businessServiceRepo.findById(orderItem.toOrdertItemDto().getBusinessServiceId());
-        Review review = Review.builder()
-                .businessService(businessService.orElseGet(()-> null))
-                .business(businessService.map(BusinessService::getBusiness).orElseGet(()-> null))
-                .user(getCurrentUser())
-                .rating(reviewRequest.getRating())
-                .description(reviewRequest.getDescription())
-                .build();
-        calcAverageRating(review, "ADD",0.0);
-        reviewRepository.save(review);
-        return review.toReviewResponseDto();
-    }
+            OrderItem orderItem = orderItemRepository.findById(orderItemId).orElseThrow(() -> new ResourceNotFoundException("OrderItem","id", String.valueOf(orderItemId)));
+            if(Objects.nonNull(orderItem.getReview())){
+                throw new UrbanApiException(HttpStatus.UNPROCESSABLE_ENTITY,"Review already exist");
+            }
+            Optional<BusinessService> businessService = businessServiceRepo.findById(orderItem.toOrdertItemDto().getBusinessServiceId());
+            Review review = Review.builder()
+                    .businessService(businessService.orElseGet(()-> null))
+                    .business(businessService.map(BusinessService::getBusiness).orElseGet(()-> null))
+                    .user(getCurrentUser())
+                    .rating(reviewRequest.getRating())
+                    .description(reviewRequest.getDescription())
+                    .orderItem(orderItem)
+                    .build();
+            orderItem.setReview(review);
+            calcAverageRating(review, "ADD",0.0);
+            return reviewRepository.save(review).toReviewResponseDto();
+        }
 
     @Override
     public List<ReviewResponseDto> getOrderItemReviews(List<Long> orderItemIds) {
@@ -68,8 +72,10 @@ public class ReviewServiceImpl implements ReviewService {
         }
         User user = getCurrentUser();
 
-        List<OrderItem> invalidOrderItemIds = orderItems.stream()
-                .filter(orderItem -> orderItem.getOrder().getUser().getId().equals(user.getId())).toList();
+        List<Long> invalidOrderItemIds = orderItems.stream()
+                .filter(orderItem -> !orderItem.getOrder().getUser().getId().equals(user.getId()))
+                .map(OrderItem::getId).toList();
+
         if(!CollectionUtils.isEmpty(invalidOrderItemIds)){
             throw new UrbanApiException(HttpStatus.UNPROCESSABLE_ENTITY,"OrderItemIds doesn't exists. OrderItem Ids are "+ StringUtils.join(invalidOrderItemIds, "-"));
         }
@@ -86,7 +92,7 @@ public class ReviewServiceImpl implements ReviewService {
         Double previousRating = review.getRating();
         review.setDescription(reviewRequestDto.getDescription());
         review.setRating(reviewRequestDto.getRating());
-        calcAverageRating(review, "UPDATED",previousRating);
+        calcAverageRating(review, "UPDATE",previousRating);
         return reviewRepository.save(review).toReviewResponseDto();
     }
 
@@ -137,32 +143,50 @@ public class ReviewServiceImpl implements ReviewService {
 
     private void calcAverageRating(Review review, String action, Double previousRating){
 
-        long newTotal = review.getBusinessService().getTotalReviews();
         Double newRating = review.getRating();
-        Double totalExistingRating = 0.0;
-        previousRating = -1*previousRating;
+        previousRating = -1.0*previousRating;
+        int value = 0;
         if(reviewActions.containsKey(action)){
-            int value = reviewActions.get(action);
+             value = reviewActions.get(action);
+             if(action.equals("REMOVE")){
+                 newRating = 0.0;
+             }
         }else{
             throw new UrbanApiException(HttpStatus.UNPROCESSABLE_ENTITY, action + " action is not applicable on reviews.");
         }
 
         if(Objects.nonNull(review.getBusiness())){
-            Business business = review.getBusiness();
-            totalExistingRating = business.getAverageRating() * business.getTotalReviews();
-            Double newAverage  = ( totalExistingRating + previousRating + newRating)/ newTotal;
-            business.setAverageRating(newAverage);
-            business.setTotalReviews(newTotal);
-            businessRepository.save(business);
+            updateBusinessRating(review, value, previousRating, newRating);
         }
         if(Objects.nonNull(review.getBusinessService())){
-            BusinessService businessService = review.getBusinessService();
-            totalExistingRating = businessService.getAverageRating() * businessService.getTotalReviews();
-            Double newAverage  = ( totalExistingRating + previousRating + newRating)/ newTotal;
-            businessService.setAverageRating(newAverage);
-            businessService.setTotalReviews(newTotal);
-            businessServiceRepo.save(businessService);
+            updateBusinessServiceRating(review, value, previousRating, newRating);
         }
+    }
+
+    private Double updateBusinessServiceRating(Review review ,int effectiveReviewCount, Double previousRating, Double newRating){
+        long newTotal = review.getBusinessService().getTotalReviews();
+        newTotal += effectiveReviewCount;
+        Double totalExistingRating = 0.0;
+        BusinessService businessService = review.getBusinessService();
+        totalExistingRating = businessService.getAverageRating() * businessService.getTotalReviews();
+        Double newAverage  = (newTotal == 0) ? 0.0 : ( totalExistingRating + previousRating + newRating)/ newTotal;
+        businessService.setAverageRating(newAverage);
+        businessService.setTotalReviews(newTotal);
+        businessServiceRepo.save(businessService);
+        return newAverage;
+    }
+
+    private Double updateBusinessRating(Review review ,int effectiveReviewCount, Double previousRating, Double newRating){
+        long newTotal = review.getBusinessService().getBusiness().getTotalReviews();
+        newTotal += effectiveReviewCount;
+        Double totalExistingRating = 0.0;
+        Business business = review.getBusinessService().getBusiness();
+        totalExistingRating = business.getAverageRating() * business.getTotalReviews();
+        Double newAverage  = ( totalExistingRating + previousRating + newRating)/ newTotal;
+        business.setAverageRating(newAverage);
+        business.setTotalReviews(newTotal);
+        businessRepository.save(business);
+        return newAverage;
     }
 
     private User getCurrentUser(){
