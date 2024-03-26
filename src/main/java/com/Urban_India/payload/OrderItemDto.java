@@ -26,6 +26,8 @@ public class OrderItemDto {
     private OrderItemStatusEnum status;
     private Double effectivePrice;
 
+    private ReviewResponseDto review;
+
     public OrderItem toOrdertItem(){
         return OrderItem.builder()
                 .id(this.id)

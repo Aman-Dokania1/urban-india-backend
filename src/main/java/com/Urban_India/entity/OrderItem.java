@@ -76,6 +76,7 @@ public class OrderItem {
                 .businessServicePrice(this.businessServicePrice)
                 .status(this.orderItemStatusEnum)
                 .effectivePrice(this.effectivePrice)
+                .review( Objects.nonNull(this.review) ? this.review.toReviewResponseDto() : null)
                 .build();
     }
 }
