@@ -1,5 +1,6 @@
 package com.Urban_India.controller;
 
+import com.Urban_India.payload.BaseFilter;
 import com.Urban_India.payload.PaginatedDto;
 import com.Urban_India.payload.ReviewRequestDto;
 import com.Urban_India.payload.ReviewResponseDto;
@@ -59,10 +60,10 @@ public class ReviewController {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    @GetMapping("business/{id}/reviews")
-    public ResponseEntity<Response<PaginatedDto<ReviewResponseDto>>> getBusinessReviews(@PathVariable("id") Long businessId,@RequestParam(name = "per", defaultValue = "10" ) Integer per, @RequestParam(name = "page", defaultValue = "0") Integer page, @RequestParam(name = "paginate", defaultValue = "true") boolean paginate){
+    @PostMapping("business/{id}/reviews")
+    public ResponseEntity<Response<PaginatedDto<ReviewResponseDto>>> getBusinessReviews(@PathVariable("id") Long businessId, @RequestBody BaseFilter baseFilter){
         Response<PaginatedDto<ReviewResponseDto>> response = new Response<>();
-        Pageable pageable = paginate ? PageRequest.of(page,per) : Pageable.unpaged();
+        Pageable pageable = baseFilter.getPageable();
         PaginatedDto<ReviewResponseDto> paginatedDto = reviewService.getBusinessReviews(List.of(businessId),pageable);
         response.setDto(paginatedDto);
         response.setHttpStatus(HttpStatus.OK);
