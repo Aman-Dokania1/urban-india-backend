@@ -70,10 +70,10 @@ public class ReviewController {
         return new ResponseEntity<>(response,HttpStatus.OK);
     }
 
-    @GetMapping("businessService/{id}/reviews")
-    public ResponseEntity<Response<PaginatedDto<ReviewResponseDto>>> getBusinessServiceReviews(@PathVariable("id") Long businessServiceId,@RequestParam(name = "per", defaultValue = "10" ) Integer per, @RequestParam(name = "page", defaultValue = "0") Integer page, @RequestParam(name = "paginate", defaultValue = "true") boolean paginate){
+    @PostMapping("businessService/{id}/reviews")
+    public ResponseEntity<Response<PaginatedDto<ReviewResponseDto>>> getBusinessServiceReviews(@PathVariable("id") Long businessServiceId, @RequestBody BaseFilter baseFilter){
         Response<PaginatedDto<ReviewResponseDto>> response = new Response<>();
-        Pageable pageable = paginate ? PageRequest.of(page,per) : Pageable.unpaged();
+        Pageable pageable = baseFilter.getPageable();
         PaginatedDto<ReviewResponseDto> paginatedDto = reviewService.getBusinessServiceReviews(List.of(businessServiceId),pageable);
         response.setDto(paginatedDto);
         response.setHttpStatus(HttpStatus.OK);
