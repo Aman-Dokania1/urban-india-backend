@@ -16,10 +16,10 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Review {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Review extends BaseEntity{
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     private String description;
 
@@ -45,7 +45,7 @@ public class Review {
 
     public ReviewResponseDto toReviewResponseDto(){
         return ReviewResponseDto.builder()
-                .id(this.id)
+                .id(this.getId())
                 .rating(this.rating)
                 .description(this.description)
                 .businessServiceId(this.businessService.getId())

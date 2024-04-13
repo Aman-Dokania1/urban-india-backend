@@ -2,6 +2,7 @@ package com.Urban_India.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 @Setter
 @Getter
@@ -9,11 +10,11 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "image")
-@Builder
-public class Image {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@SuperBuilder
+public class Image extends BaseEntity {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     private String name;
 

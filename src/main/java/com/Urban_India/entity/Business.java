@@ -17,10 +17,10 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Business {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Business extends BaseEntity {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     @Column(unique = true)
     private String name;
@@ -81,7 +81,7 @@ public class Business {
 
     public BusinessDto toBusinessDto(){
         return BusinessDto.builder()
-                .id(this.id)
+                .id(this.getId())
                 .name(this.name)
                 .tagline(this.tagline)
                 .rating(this.averageRating)

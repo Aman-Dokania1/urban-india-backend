@@ -15,10 +15,10 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class User extends BaseEntity{
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
     private String firstName;
     private String lastName;
     private String username;

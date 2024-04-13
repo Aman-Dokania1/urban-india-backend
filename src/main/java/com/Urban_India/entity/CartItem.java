@@ -21,10 +21,10 @@ import java.util.Objects;
 @AllArgsConstructor
 @SuperBuilder
 @Table(name = "cart_items")
-public class CartItem {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class CartItem extends BaseEntity{
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     private Long quantity;
 
@@ -53,7 +53,7 @@ public class CartItem {
     public CartItemDto toCartItemDto(){
         return CartItemDto.builder()
                 .cartId(Objects.isNull(this.cart) ? null :this.cart.getId())
-                .id(this.id)
+                .id(this.getId())
                 .businessServiceId(Objects.isNull(this.businessService) ? null :this.businessService.getId())
                 .quantity(this.quantity)
                 .businessService(Objects.nonNull(this.businessService) ? this.businessService.toBusinessServiceDto() : null)

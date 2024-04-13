@@ -17,10 +17,10 @@ import java.util.Objects;
 @AllArgsConstructor
 @SuperBuilder
 @Table(name = "business_service")
-public class BusinessService {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class BusinessService extends BaseEntity{
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     @Column(nullable = false)
     private String title;
@@ -86,7 +86,7 @@ public class BusinessService {
 
     public BusinessServiceDto toBusinessServiceDto(){
         return BusinessServiceDto.builder()
-                .id(this.id)
+                .id(this.getId())
                 .title(this.title)
                 .description(this.description)
                 .price(this.price)

@@ -3,6 +3,7 @@ package com.Urban_India.entity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +14,12 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "services")
-@Builder
-public class ServiceProviderEntitiy {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@SuperBuilder
+public class ServiceProviderEntitiy extends BaseEntity {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
+
     @Column(unique = true)
     private String title;
     private String description;

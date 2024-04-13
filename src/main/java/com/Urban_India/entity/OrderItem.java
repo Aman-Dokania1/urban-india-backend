@@ -16,11 +16,11 @@ import java.util.Objects;
 @AllArgsConstructor
 @Getter
 @Setter
-public class OrderItem {
+public class OrderItem extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     @ManyToOne()
     @JoinColumn(name = "order_id")
@@ -68,7 +68,7 @@ public class OrderItem {
 
     public OrderItemDto toOrdertItemDto(){
         return OrderItemDto.builder()
-                .id(this.id)
+                .id(this.getId())
                 .businessServiceName(this.businessServiceName)
                 .businessServiceId(this.businessServiceId)
                 .completionDate(this.completionDate)

@@ -12,11 +12,11 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "child_service")
-public class ChildService {
+public class ChildService extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
     private String name;
     private double price;
 

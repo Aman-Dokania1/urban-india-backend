@@ -2,6 +2,7 @@ package com.Urban_India.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -12,11 +13,11 @@ import java.util.Set;
 @AllArgsConstructor
 @Entity
 @Table(name="role")
-@Builder
-public class Role {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@SuperBuilder
+public class Role extends BaseEntity {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
     private String name;
 
      @ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)

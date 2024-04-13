@@ -22,10 +22,10 @@ import java.util.stream.Collectors;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Order {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Order extends BaseEntity {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     @Column(name = "payment_id")
     private Long paymentId;
@@ -107,7 +107,7 @@ public class Order {
         CouponDto couponDto = CouponDto.builder().id(couponId).code(couponCode).percent(couponPercentage).build();
 
         return OrderDto.builder()
-                .id(this.id)
+                .id(this.getId())
                 .couponId(couponId)
                 .coupon(couponDto)
                 .status(this.orderStatusEnum)

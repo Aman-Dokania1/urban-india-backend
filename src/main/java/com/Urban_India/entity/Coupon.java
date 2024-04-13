@@ -16,10 +16,10 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @SuperBuilder
-public class Coupon {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class Coupon extends BaseEntity {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     private LocalDate startTime;
     private LocalDate endTime;
@@ -51,7 +51,7 @@ public class Coupon {
 
     public CouponDto toCouponDto(){
         return CouponDto.builder()
-                .id(this.id)
+                .id(this.getId())
                 .startTime(this.startTime)
                 .endTime(this.endTime)
                 .code(this.code)

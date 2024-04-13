@@ -9,10 +9,14 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingRequestValueException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.ServletRequestBindingException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.multipart.support.MissingServletRequestPartException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.naming.AuthenticationException;
@@ -70,6 +74,17 @@ public class GlobalExceptionHandler  {
 //        ErrorDetails errorDetails=new ErrorDetails(new Date(),exception.getMessage(),webRequest.getDescription(false),HttpStatus.INTERNAL_SERVER_ERROR);
         return new ResponseEntity<>(new ExceptionResponse<>(exception, exception.getMessage()), HttpStatus.METHOD_NOT_ALLOWED);
     }
+
+    @ExceptionHandler({MissingServletRequestParameterException.class})
+    private ResponseEntity<ExceptionResponse<Exception>> handle(MissingServletRequestParameterException exception, WebRequest webRequest){
+        return new ResponseEntity<>(new ExceptionResponse<>(exception, exception.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
+    @ExceptionHandler({MissingServletRequestPartException.class})
+    private ResponseEntity<ExceptionResponse<MissingServletRequestPartException>> handle(MissingServletRequestPartException exception, WebRequest webRequest){
+        return new ResponseEntity<>(new ExceptionResponse<>(exception, exception.getMessage()), HttpStatus.UNPROCESSABLE_ENTITY);
+    }
+
     @ExceptionHandler(Exception.class)
     private ResponseEntity<ExceptionResponse<Exception>> handleGlobalException(Exception exception,
                                                                 WebRequest webRequest){

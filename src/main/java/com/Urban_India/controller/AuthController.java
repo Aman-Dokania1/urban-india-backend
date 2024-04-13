@@ -44,7 +44,6 @@ public class AuthController {
     {
 
         Image image =imageDataService.saveImage(file);
-
         // converting string to json
         RegisterDto registerDto = mapper.readValue(data, RegisterDto.class);
         registerDto.setImages(image);

@@ -10,7 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.envers.Audited;
 import org.json.JSONObject;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.http.HttpStatus;
 
 import java.util.Objects;
@@ -21,15 +23,17 @@ import java.util.Objects;
 @AllArgsConstructor
 @Entity
 @SuperBuilder
-public class Address {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+@EntityListeners(AuditingEntityListener.class)
+@Audited
+public class Address extends BaseEntity {
+//    @Id
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    private Long id;
 
     private String address;
 
     public Address(Long id,String address){
-        this.id = id;
+        this.setId(id);
         this.address = address;
     }
 //    private String google_location_code;
@@ -57,7 +61,7 @@ public class Address {
 
     public AddressDto toAddressDto(){
         if(Objects.isNull(this.address)){
-            throw new UrbanApiException(HttpStatus.UNPROCESSABLE_ENTITY,"Address value is not present for address id "+this.id.toString());
+            throw new UrbanApiException(HttpStatus.UNPROCESSABLE_ENTITY,"Address value is not present for address id "+this.getId().toString());
         }
             JSONObject address  = new JSONObject(this.address);
             String google_location_code = address.has("google_location_code") ? address.getString("google_location_code") : null;
@@ -66,7 +70,7 @@ public class Address {
             String pin = address.has("pin") ? address.getString("pin") : null;
             String plotNo = address.has("plotNo") ? address.getString("plotNo") : null;
             return AddressDto.builder()
-                    .id(this.id)
+                    .id(this.getId())
                     .city(city)
                     .pin(pin)
                     .state(state)
