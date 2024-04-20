@@ -50,7 +50,8 @@ public class Business extends BaseEntity {
     // details such as pan card,adhar card
     private String documents;
 
-    @OneToOne(cascade = CascadeType.PERSIST)
+//    @OneToOne(cascade = CascadeType.PERSIST)
+    @OneToOne
     @JoinColumn(name = "seller_id",referencedColumnName = "id")
     private User user ;
 

@@ -1,5 +1,6 @@
 package com.Urban_India.config;
 
+import com.Urban_India.security.CurrentUser;
 import com.Urban_India.security.JwtAuthenticationEntryPoint;
 import com.Urban_India.security.JwtAuthenticationFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -80,4 +82,9 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+//    @Bean
+//    public CurrentUser currentUserDetails() {
+//        return (CurrentUser) userDetailsService.loadUserByUsername(SecurityContextHolder.getContext().getAuthentication().getName());
+//    }
 }

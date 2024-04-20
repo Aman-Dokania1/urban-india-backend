@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -34,15 +35,16 @@ public class BusinessServiceImpl implements BusinessService {
     private AddressService addressService;
 
     @Override
+    @Transactional
     public BusinessDto createBusiness(BusinessDto businessDto) {
         User user=currentUser();
         Business business=businessDto.toBusiness();
         business.setUser(user);
-        Address address=addressService.saveAddress(business.getAddress());
-        business.setAddress(address);
-        Business savedBusiness=businessRepository.save(business);
+//        Address address=addressService.saveAddress(business.getAddress());
+        business.setAddress(business.getAddress());
         user.setBusiness(business);
-        userRepository.save(user);
+        Business savedBusiness=businessRepository.save(business);
+//        userRepository.save(user);
         return business.toBusinessDto();
     }
 
